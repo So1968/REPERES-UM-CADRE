@@ -1,6 +1,23 @@
+# Dépendances
 node_modules/
+app/node_modules/
+
+# Build
 dist/
+app/dist/
+
+# Environnement
 .env
-*.log
-*.json
-!package.json
+.env.local
+
+# Quarantaine locale
+_quarantaine-fichiers-parasites/
+
+# Sauvegardes locales réelles
+*.json.backup
+*_backup.json
+sauvegarde*.json
+
+# Système
+.DS_Store
+Thumbs.db
