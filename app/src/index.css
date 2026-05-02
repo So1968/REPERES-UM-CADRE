@@ -570,3 +570,18 @@ textarea:focus {
 .notranslate {
   translate: no;
 }
+
+.bandeauSecurite {
+  margin-bottom: 14px;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #8a3b00;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.inputImport {
+  display: none;
+}
