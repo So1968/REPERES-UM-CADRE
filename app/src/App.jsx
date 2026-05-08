@@ -877,11 +877,44 @@ export default function App() {
   }
 
 
+  function prefixeDepuisMetier(metier) {
+    return String(metier || "AG")
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, "")
+      .slice(0, 6) || "AG";
+  }
+
+  function genererCodeMembre(metier) {
+    const prefixe = prefixeDepuisMetier(metier);
+    const numerosExistants = equipe
+      .map((pro) => {
+        const match = String(pro.code || "").match(new RegExp(`^${prefixe}-(\\d{2})-[A-Z]$`));
+        return match ? Number(match[1]) : 0;
+      })
+      .filter(Boolean);
+
+    const prochainNumero = Math.max(0, ...numerosExistants) + 1;
+    return `${prefixe}-${String(prochainNumero).padStart(2, "0")}-E`;
+  }
+
   function modifierNouveauMembre(champ, valeur) {
-    setNouveauMembre((actuel) => ({
-      ...actuel,
-      [champ]: champ === "code" ? valeur.toUpperCase().replace(/\s+/g, "") : valeur,
-    }));
+    setNouveauMembre((actuel) => {
+      if (champ === "metier") {
+        const codeActuel = String(actuel.code || "").trim();
+        const codeAutoOuVide = !codeActuel || /^[A-Z0-9]{1,6}-\d{2}-[A-Z]$/.test(codeActuel);
+
+        return {
+          ...actuel,
+          metier: valeur,
+          code: codeAutoOuVide ? genererCodeMembre(valeur) : codeActuel,
+        };
+      }
+
+      return {
+        ...actuel,
+        [champ]: champ === "code" ? valeur.toUpperCase().replace(/\s+/g, "") : valeur,
+      };
+    });
   }
 
   function ajouterMembreEquipe(e) {
@@ -889,7 +922,7 @@ export default function App() {
 
     const code = nouveauMembre.code.trim().toUpperCase();
     if (!code) {
-      window.alert("Code professionnel obligatoire, par exemple IDE-04 ou EDU-07.");
+      window.alert("Code agent obligatoire, par exemple IDE-01-E ou ES-02-A.");
       return;
     }
 
@@ -1022,7 +1055,7 @@ export default function App() {
   function exporterJson() {
     const contenu = JSON.stringify(
       {
-        outil: "EMA cadre",
+        outil: "Pilotage UM",
         exporteLe: new Date().toISOString(),
         situations,
         equipe,
@@ -1031,7 +1064,7 @@ export default function App() {
       2
     );
 
-    telechargerFichier("reperes-um-2-cadre-export.json", contenu, "application/json");
+    telechargerFichier("pilotage-um-export.json", contenu, "application/json");
   }
 
   function importerJson(event) {
@@ -1045,7 +1078,7 @@ export default function App() {
         const donnees = JSON.parse(String(lecteur.result || "{}"));
 
         if (!Array.isArray(donnees.situations) || !Array.isArray(donnees.equipe)) {
-          window.alert("Import impossible : le fichier JSON ne correspond pas à une sauvegarde EMA.");
+          window.alert("Import impossible : le fichier JSON ne correspond pas à une sauvegarde Pilotage UM.");
           return;
         }
 
@@ -1159,7 +1192,7 @@ export default function App() {
     });
 
     telechargerFichier(
-      "reperes-um-2-cadre-export.csv",
+      "pilotage-um-export.csv",
       [entetes.join(";"), ...lignes].join("\n"),
       "text/csv;charset=utf-8"
     );
@@ -1169,16 +1202,26 @@ export default function App() {
     <main className="page notranslate" translate="no">
       <header className="entete">
         <div>
-          <p className="surTitre">EMA / Cadre</p>
-          <h1>Pilotage cadre</h1>
+          <p className="surTitre">Outil cadre de pilotage pour l’Unité Mobile</p>
+          <h1>Pilotage UM</h1>
+          <p className="sousTitreEntete">Charge, attribution, parcours, alertes et continuité.</p>
         </div>
+      </header>
+
+      <details className="bloc blocSauvegardeExport">
+        <summary className="resumeBloc">
+          <div>
+            <h2>Sauvegarde / export</h2>
+            <p>Exporter, importer ou récupérer les données locales de ce navigateur.</p>
+          </div>
+        </summary>
 
         <div className="actionsExport actionsExportDiscretes" aria-label="Sauvegarde et exports">
           <button type="button" className="boutonLienExport" onClick={exporterJson}>
-            JSON
+            Export JSON
           </button>
           <button type="button" className="boutonLienExport" onClick={() => importJsonRef.current?.click()}>
-            Import
+            Import JSON
           </button>
           <input
             ref={importJsonRef}
@@ -1188,10 +1231,10 @@ export default function App() {
             onChange={importerJson}
           />
           <button type="button" className="boutonLienExport" onClick={exporterCsv}>
-            CSV
+            Export CSV
           </button>
         </div>
-      </header>
+      </details>
 
       <section className="bandeauSynthese bandeauSyntheseSix" aria-label="Synthèse cadre">
         <article className="carteSynthese">
@@ -1568,7 +1611,7 @@ export default function App() {
                 </div>
 
                 <p className="noteTrajetTemp">
-                  Calcul via un service cartographique externe. Repères UM ne stocke pas l’adresse saisie.
+                  Calcul via un service cartographique externe. Pilotage UM ne stocke pas l’adresse saisie.
                 </p>
 
                 {trajetTemp.message && <p className="messageTrajetTemp">{trajetTemp.message}</p>}
