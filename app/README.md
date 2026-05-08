@@ -1,16 +1,63 @@
-# React + Vite
+# Application Repères UM 2.0
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application React/Vite locale pour l’outil cadre Repères UM 2.0.
 
-Currently, two official plugins are available:
+## Lancer l’app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+## Construire l’app
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run build
+```
 
-## Expanding the ESLint configuration
+## Évolutions intégrées
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- signature = démarrage effectif ;
+- calcul automatique J+45 / J+75 / J+90 ;
+- délai suspendu ;
+- statut Analyse réalisée — non prise en charge ;
+- charge effective / préparatoire / projetée ;
+- score interne de vigilance charge ;
+- aide à l’attribution par métier ;
+- export JSON ;
+- export CSV.
+
+
+## Continuité d’équipe
+
+La version intègre la modification des fiches, les disponibilités professionnelles, les absences, les relais temporaires et l’impact sur l’aide à l’attribution.
+
+
+## Affichage responsive
+
+Le module absences / roulement utilise des cartes repliables : vue PC en grille compacte, vue téléphone en colonne avec résumé court et détails à ouvrir.
+
+
+## Mise à jour — affichage replié, trajets et confort visuel
+
+- La saisie d'une nouvelle situation est repliée par défaut.
+- La charge équipe affiche d'abord un résumé, puis les détails à la demande.
+- Le module trajet ne stocke pas d'adresse : uniquement km et minutes estimées depuis l'hôpital.
+- La palette visuelle a été adoucie : sable, sauge, ardoise, ocre doux.
+
+
+## Sauvegarde / restauration
+
+Boutons disponibles dans l’en-tête : Export JSON, Import JSON et Export CSV.
+
+L’import JSON remplace les données locales après confirmation.
+
+
+## Évolution — Objectifs signature
+
+Ajout d’un module replié par défaut permettant de sélectionner des objectifs types et de générer un texte court prêt à copier pour la réunion de signature. L’outil aide à formuler, il ne décide pas.
+
+
+## Gestion équipe active
+
+Le module Disponibilité / absences / roulement permet d’ajouter ou retirer des membres codés de l’équipe active sans saisir de noms.
