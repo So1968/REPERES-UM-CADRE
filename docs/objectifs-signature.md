@@ -1,82 +1,57 @@
-# Repères UM 2.0 — Objectifs signature
+# Objectifs signature — Repères UM 2.0
 
-## Fonction du module
+## Positionnement
 
-Le module “Objectifs signature” facilite la définition des objectifs au moment de la signature du contrat.
+Le module **Objectifs signature** est un support cadre de formulation.
 
-Il permet de gagner du temps, d’utiliser un listing préétabli, d’aider à la rédaction lorsque le médecin est absent, et d’homogénéiser les objectifs de départ.
+Il aide Michèle à préparer une base lisible pour la réunion de signature, sans décider à la place de l’équipe et sans produire de contenu clinique nominatif.
 
-## Règle cadre
+## Règle métier
 
-Les objectifs définis à la signature ne signifient pas que la situation est commencée.
+L’outil aide à formuler.  
+Il ne décide pas.
 
-**Prévu n’est pas commencé. Programmé n’est pas effectif.**
+Les objectifs restent à valider pendant la réunion de signature.
 
-## Bibliothèque simplifiée
+## Fonctionnement V1
 
-### Finalité
-- Maintien sur la structure
-- Retour à l’IME
-- Majoration du temps d’accueil ESMS
-- Retour au domicile parental
-- Orientation ou relais à organiser
+Le module est replié par défaut pour limiter le bruit visuel.
 
-### Évaluation
-- Analyse multimodale des comportements-défis
-- Évaluation sensorielle
-- Évaluation communication
-- Évaluation neuropsychologique
-- Évaluation psychomotrice
-- Évaluation ergothérapique
-- Analyse d’activité ciblée
-- Avis étiologique
-- Exploration somatique
-- Mise en évidence compétences / fragilités
+Quand il est ouvert, Michèle peut :
 
-### Intervention
-- Adapter l’environnement physique
-- Structurer l’espace
-- Structurer le temps ou l’emploi du temps
-- Mettre en place des outils de communication
-- Mettre en place des outils de régulation émotionnelle
-- Adapter les activités
-- Travailler les transitions
-- Mettre en place des renforçateurs
-- Harmoniser les pratiques
-- Réactualiser les outils existants
+- sélectionner une situation codée ;
+- choisir des objectifs dans une bibliothèque ;
+- ajouter une précision cadre courte non nominative ;
+- générer un texte prêt à copier.
 
-### Parcours et relais
-- Réinscrire dans un parcours de soins pérenne
-- Mettre en lien avec CMP / psychiatrie de secteur
-- Donner un avis sur la prise en charge thérapeutique
-- Réévaluer le traitement médicamenteux
-- Préparer relais ESMS / domicile / soins
+## Bibliothèque V1
 
-## Usage dans Repères UM 2.0
+Les catégories proposées sont :
 
-Les objectifs signature servent à préparer le démarrage.
+- finalité ;
+- comportements ciblés ;
+- évaluation ;
+- soin / coordination ;
+- orientation ;
+- communication ;
+- émotions ;
+- habiletés sociales ;
+- vie quotidienne ;
+- journée type ;
+- harmonisation des pratiques ;
+- outils à réactualiser.
 
-Ils ne font pas basculer automatiquement une situation en “effective”.
+## Limites
 
-Une situation devient effective uniquement lorsqu’une action réelle commence : première intervention, VAD, présence en structure, coordination active ou action professionnelle engagée.
+Ne jamais saisir :
 
-## Écran prévu
+- nom ;
+- prénom ;
+- date de naissance ;
+- adresse ;
+- diagnostic nominatif ;
+- élément médical identifiable ;
+- détail familial reconnaissable ;
+- numéro DPI.
 
-L’écran doit contenir :
-1. Finalité du contrat
-2. Comportements ou besoins ciblés
-3. Objectifs sélectionnés
-4. Niveau de mobilisation
-5. Niveau de complexité
-6. Lieux concernés
-7. Résumé généré
-
-## Résumé automatique attendu
-
-Objectifs définis à la signature : [objectifs sélectionnés].
-
-Finalité : [finalité].
-
-Lieux concernés : [lieux].
-
-Situation non effective tant qu’aucune action réelle n’a commencé.
+Le module reste un outil cadre, pas un outil de soin.
