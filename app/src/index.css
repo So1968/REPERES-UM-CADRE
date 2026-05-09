@@ -4474,3 +4474,42 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Correctif ergonomie trajet — affichage vertical clair */
+.calculateurTrajet {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0.8rem !important;
+}
+
+.trajetDepartFixe {
+  width: 100%;
+}
+
+.carnetStructuresTrajet {
+  width: 100%;
+}
+
+.listeStructuresTrajet {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  gap: 0.5rem !important;
+}
+
+.carteStructureTrajet {
+  min-width: 0;
+}
+
+.boutonStructureTrajet {
+  min-height: 76px;
+}
+
+.carnetStructuresTrajet + .champ {
+  width: 100%;
+}
+
+@media (max-width: 760px) {
+  .listeStructuresTrajet {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
