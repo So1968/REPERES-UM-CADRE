@@ -69,6 +69,35 @@ const typesAbsence = ["", "congé planifié", "formation", "arrêt maladie", "ab
 const modalites = ["Structure", "VAD", "Mixte", "Non défini"];
 const periodesTrajet = ["Non renseigné", "Heures creuses", "Heures de pointe", "Variable"];
 const VINATIER_ADRESSE_TRAJET = "Centre Hospitalier Le Vinatier, 95 boulevard Pinel, 69500 Bron";
+const STRUCTURES_TRAJET_STORAGE_KEY = "pilotage-um-structures-trajet-v1";
+
+const structuresTrajetInitiales = [
+  { code: "MAS-01", nom: "", adresse: "", codePostal: "", ville: "" },
+  { code: "MAS-02", nom: "", adresse: "", codePostal: "", ville: "" },
+  { code: "MAS-03", nom: "", adresse: "", codePostal: "", ville: "" },
+  { code: "FAM-01", nom: "", adresse: "", codePostal: "", ville: "" },
+  { code: "IME-01", nom: "", adresse: "", codePostal: "", ville: "" },
+  { code: "ESMS-01", nom: "", adresse: "", codePostal: "", ville: "" },
+];
+
+function normaliserStructuresTrajet(liste) {
+  if (!Array.isArray(liste)) return structuresTrajetInitiales;
+  const nettoyees = liste
+    .map((structure) => ({
+      code: String(structure.code || "").toUpperCase().replace(/\s+/g, ""),
+      nom: String(structure.nom || ""),
+      adresse: String(structure.adresse || ""),
+      codePostal: String(structure.codePostal || ""),
+      ville: String(structure.ville || ""),
+    }))
+    .filter((structure) => structure.code);
+  return nettoyees.length ? nettoyees : structuresTrajetInitiales;
+}
+
+function adresseCompleteStructure(structure) {
+  return [structure.adresse, structure.codePostal, structure.ville].filter(Boolean).join(", ");
+}
+
 const circulations = ["Non renseigné", "fluide", "modérée", "dense", "très dense"];
 const mobilisations = ["faible", "modéré", "élevé", "très élevé"];
 const coordinations = ["simple", "régulier", "complexe", "très complexe"];
@@ -549,6 +578,22 @@ export default function App() {
     chargement: false,
     message: "",
   });
+  const [structuresTrajet, setStructuresTrajet] = useState(() => {
+    try {
+      const sauvegarde = localStorage.getItem(STRUCTURES_TRAJET_STORAGE_KEY);
+      return sauvegarde ? normaliserStructuresTrajet(JSON.parse(sauvegarde)) : structuresTrajetInitiales;
+    } catch {
+      return structuresTrajetInitiales;
+    }
+  });
+  const [afficherFormStructureTrajet, setAfficherFormStructureTrajet] = useState(false);
+  const [structureTrajetForm, setStructureTrajetForm] = useState({
+    code: "",
+    nom: "",
+    adresse: "",
+    codePostal: "",
+    ville: "",
+  });
   const importJsonRef = useRef(null);
 
   useEffect(() => {
@@ -558,6 +603,10 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(EQUIPE_STORAGE_KEY, JSON.stringify(equipe));
   }, [equipe]);
+
+  useEffect(() => {
+    localStorage.setItem(STRUCTURES_TRAJET_STORAGE_KEY, JSON.stringify(structuresTrajet));
+  }, [structuresTrajet]);
 
   const dateAttributionReference = dateNouvelleAttribution || aujourdHuiISO();
 
@@ -786,6 +835,80 @@ export default function App() {
     );
   }
 
+
+  function modifierStructureTrajetForm(champ, valeur) {
+    setStructureTrajetForm((actuelle) => ({
+      ...actuelle,
+      [champ]: champ === "code" ? valeur.toUpperCase().replace(/\s+/g, "") : valeur,
+    }));
+  }
+
+  function enregistrerStructureTrajet() {
+    const structure = {
+      code: structureTrajetForm.code.trim().toUpperCase().replace(/\s+/g, ""),
+      nom: structureTrajetForm.nom.trim(),
+      adresse: structureTrajetForm.adresse.trim(),
+      codePostal: structureTrajetForm.codePostal.trim(),
+      ville: structureTrajetForm.ville.trim(),
+    };
+
+    if (!structure.code) {
+      window.alert("Code structure obligatoire, par exemple MAS-01 ou ESMS-01.");
+      return;
+    }
+
+    if (!structure.adresse || !structure.ville) {
+      window.alert("Adresse et ville sont nécessaires pour le calcul trajet.");
+      return;
+    }
+
+    setStructuresTrajet((actuelles) => {
+      const sansDoublon = actuelles.filter((item) => item.code !== structure.code);
+      return [...sansDoublon, structure].sort((a, b) => a.code.localeCompare(b.code));
+    });
+
+    setStructureTrajetForm({ code: "", nom: "", adresse: "", codePostal: "", ville: "" });
+    setAfficherFormStructureTrajet(false);
+    setTrajetTemp((actuel) => ({
+      ...actuel,
+      message: `${structure.code} enregistrée dans le carnet structures.`,
+    }));
+  }
+
+  function modifierStructureTrajetExistante(code) {
+    const structure = structuresTrajet.find((item) => item.code === code);
+    if (!structure) return;
+
+    setStructureTrajetForm({
+      code: structure.code,
+      nom: structure.nom || "",
+      adresse: structure.adresse || "",
+      codePostal: structure.codePostal || "",
+      ville: structure.ville || "",
+    });
+    setAfficherFormStructureTrajet(true);
+  }
+
+  function utiliserStructureTrajet(code) {
+    const structure = structuresTrajet.find((item) => item.code === code);
+    if (!structure) return;
+
+    const adresse = adresseCompleteStructure(structure);
+    if (!adresse) {
+      setTrajetTemp((actuel) => ({
+        ...actuel,
+        message: `${structure.code} : adresse structure à compléter avant calcul.`,
+      }));
+      return;
+    }
+
+    setTrajetTemp((actuel) => ({
+      ...actuel,
+      depart: VINATIER_ADRESSE_TRAJET,
+      destination: adresse,
+      message: `${structure.code} sélectionnée pour le calcul trajet.`,
+    }));
+  }
 
   function modifierTrajetTemp(champ, valeur) {
     setTrajetTemp((actuel) => ({
@@ -1568,11 +1691,102 @@ export default function App() {
                   <small>95 boulevard Pinel — 69500 Bron</small>
                 </div>
 
+                <div className="carnetStructuresTrajet">
+                  <div className="enteteCarnetStructures">
+                    <h4>Adresses structures</h4>
+                    <button
+                      type="button"
+                      className="boutonSecondaire"
+                      onClick={() => setAfficherFormStructureTrajet((actuel) => !actuel)}
+                    >
+                      {afficherFormStructureTrajet ? "Refermer" : "+ Ajouter une adresse structure"}
+                    </button>
+                  </div>
+
+                  <div className="listeStructuresTrajet">
+                    {structuresTrajet.map((structure) => {
+                      const adresse = adresseCompleteStructure(structure);
+                      return (
+                        <article className="carteStructureTrajet" key={structure.code}>
+                          <button
+                            type="button"
+                            className="boutonStructureTrajet"
+                            onClick={() => utiliserStructureTrajet(structure.code)}
+                            disabled={!adresse}
+                            title={adresse || "Adresse structure à compléter"}
+                          >
+                            <strong>{structure.code}</strong>
+                            <span>{structure.nom || "Structure à nommer"}</span>
+                            <small>{structure.ville || "Adresse à compléter"}</small>
+                          </button>
+                          <button
+                            type="button"
+                            className="miniBoutonStructure"
+                            onClick={() => modifierStructureTrajetExistante(structure.code)}
+                          >
+                            Modifier
+                          </button>
+                        </article>
+                      );
+                    })}
+                  </div>
+
+                  {afficherFormStructureTrajet && (
+                    <div className="formStructureTrajet">
+                      <input
+                        type="text"
+                        placeholder="Code ex : MAS-01"
+                        value={structureTrajetForm.code}
+                        onChange={(e) => modifierStructureTrajetForm("code", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Nom structure"
+                        value={structureTrajetForm.nom}
+                        onChange={(e) => modifierStructureTrajetForm("nom", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Adresse structure"
+                        value={structureTrajetForm.adresse}
+                        onChange={(e) => modifierStructureTrajetForm("adresse", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Code postal"
+                        value={structureTrajetForm.codePostal}
+                        onChange={(e) => modifierStructureTrajetForm("codePostal", e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Ville"
+                        value={structureTrajetForm.ville}
+                        onChange={(e) => modifierStructureTrajetForm("ville", e.target.value)}
+                      />
+                      <div className="actionsStructureTrajet">
+                        <button type="button" className="boutonPrincipal" onClick={enregistrerStructureTrajet}>
+                          Enregistrer l’adresse
+                        </button>
+                        <button
+                          type="button"
+                          className="boutonSecondaire"
+                          onClick={() => {
+                            setStructureTrajetForm({ code: "", nom: "", adresse: "", codePostal: "", ville: "" });
+                            setAfficherFormStructureTrajet(false);
+                          }}
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <label className="champ">
-                  <span>Adresse temporaire du lieu</span>
+                  <span>Adresse personnelle / autre lieu ponctuel</span>
                   <input
                     type="text"
-                    placeholder="Adresse utilisée pour le calcul, puis effacée"
+                    placeholder="Adresse ponctuelle sans nom ni prénom, effacée après calcul"
                     value={trajetTemp.destination}
                     onChange={(e) => modifierTrajetTemp("destination", e.target.value)}
                     autoComplete="off"
@@ -1594,7 +1808,7 @@ export default function App() {
                 </div>
 
                 <p className="noteTrajetTemp">
-                  Calcul via un service cartographique externe. Pilotage UM ne stocke pas l’adresse du lieu saisie.
+                  La fiche conserve seulement les kilomètres et les minutes estimés.
                 </p>
 
                 {trajetTemp.message && <p className="messageTrajetTemp">{trajetTemp.message}</p>}
