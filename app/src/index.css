@@ -4513,3 +4513,21 @@ h2 {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+/* Pilotage UM — adresses structures en menu déroulant */
+.selectionStructureTrajet {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+  align-items: end;
+}
+
+.selectionStructureTrajet .champ {
+  margin: 0;
+}
+
+@media (max-width: 760px) {
+  .selectionStructureTrajet {
+    grid-template-columns: 1fr;
+  }
+}

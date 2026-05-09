@@ -594,6 +594,7 @@ export default function App() {
     codePostal: "",
     ville: "",
   });
+  const [structureTrajetSelection, setStructureTrajetSelection] = useState("");
   const importJsonRef = useRef(null);
 
   useEffect(() => {
@@ -868,6 +869,7 @@ export default function App() {
     });
 
     setStructureTrajetForm({ code: "", nom: "", adresse: "", codePostal: "", ville: "" });
+    setStructureTrajetSelection(structure.code);
     setAfficherFormStructureTrajet(false);
     setTrajetTemp((actuel) => ({
       ...actuel,
@@ -893,6 +895,7 @@ export default function App() {
     const structure = structuresTrajet.find((item) => item.code === code);
     if (!structure) return;
 
+    setStructureTrajetSelection(code);
     const adresse = adresseCompleteStructure(structure);
     if (!adresse) {
       setTrajetTemp((actuel) => ({
@@ -1699,36 +1702,43 @@ export default function App() {
                       className="boutonSecondaire"
                       onClick={() => setAfficherFormStructureTrajet((actuel) => !actuel)}
                     >
-                      {afficherFormStructureTrajet ? "Refermer" : "+ Ajouter une adresse structure"}
+                      {afficherFormStructureTrajet ? "Refermer l’ajout" : "+ Ajouter une adresse structure"}
                     </button>
                   </div>
 
-                  <div className="listeStructuresTrajet">
-                    {structuresTrajet.map((structure) => {
-                      const adresse = adresseCompleteStructure(structure);
-                      return (
-                        <article className="carteStructureTrajet" key={structure.code}>
-                          <button
-                            type="button"
-                            className="boutonStructureTrajet"
-                            onClick={() => utiliserStructureTrajet(structure.code)}
-                            disabled={!adresse}
-                            title={adresse || "Adresse structure à compléter"}
-                          >
-                            <strong>{structure.code}</strong>
-                            <span>{structure.nom || "Structure à nommer"}</span>
-                            <small>{structure.ville || "Adresse à compléter"}</small>
-                          </button>
-                          <button
-                            type="button"
-                            className="miniBoutonStructure"
-                            onClick={() => modifierStructureTrajetExistante(structure.code)}
-                          >
-                            Modifier
-                          </button>
-                        </article>
-                      );
-                    })}
+                  <div className="selectionStructureTrajet">
+                    <label className="champ">
+                      <span>Choisir une adresse structure</span>
+                      <select
+                        value={structureTrajetSelection}
+                        onChange={(e) => {
+                          const code = e.target.value;
+                          setStructureTrajetSelection(code);
+                          if (code) utiliserStructureTrajet(code);
+                        }}
+                      >
+                        <option value="">Sélectionner</option>
+                        {structuresTrajet.map((structure) => {
+                          const adresse = adresseCompleteStructure(structure);
+                          return (
+                            <option value={structure.code} key={structure.code} disabled={!adresse}>
+                              {structure.code} — {structure.nom || "Structure à nommer"}
+                              {structure.ville ? ` · ${structure.ville}` : ""}
+                              {!adresse ? " · adresse à compléter" : ""}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </label>
+
+                    <button
+                      type="button"
+                      className="boutonSecondaire"
+                      disabled={!structureTrajetSelection}
+                      onClick={() => modifierStructureTrajetExistante(structureTrajetSelection)}
+                    >
+                      Modifier la structure sélectionnée
+                    </button>
                   </div>
 
                   {afficherFormStructureTrajet && (
