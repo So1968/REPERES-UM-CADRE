@@ -4541,3 +4541,14 @@ h2 {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* Pilotage UM — libellés trajet simplifiés */
+.enteteCarnetStructures .boutonSecondaire {
+  font-size: 0.82rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+}
+
+.enteteCarnetStructures h4 {
+  font-size: 1rem;
+}

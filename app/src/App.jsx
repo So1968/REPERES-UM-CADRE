@@ -1696,19 +1696,19 @@ export default function App() {
 
                 <div className="carnetStructuresTrajet">
                   <div className="enteteCarnetStructures">
-                    <h4>Adresses structures</h4>
+                    <h4>Structure</h4>
                     <button
                       type="button"
                       className="boutonSecondaire"
                       onClick={() => setAfficherFormStructureTrajet((actuel) => !actuel)}
                     >
-                      {afficherFormStructureTrajet ? "Refermer l’ajout" : "+ Ajouter une adresse structure"}
+                      {afficherFormStructureTrajet ? "refermer" : "+ ajouter"}
                     </button>
                   </div>
 
                   <div className="selectionStructureTrajet">
                     <label className="champ">
-                      <span>Choisir une adresse structure</span>
+                      <span>Choisir une structure</span>
                       <select
                         value={structureTrajetSelection}
                         onChange={(e) => {
@@ -1793,10 +1793,10 @@ export default function App() {
                 </div>
 
                 <label className="champ">
-                  <span>Adresse personnelle / autre lieu ponctuel</span>
+                  <span>Adresse personnelle</span>
                   <input
                     type="text"
-                    placeholder="Adresse ponctuelle sans nom ni prénom, effacée après calcul"
+                    placeholder="Adresse ponctuelle sans nom ni prénom"
                     value={trajetTemp.destination}
                     onChange={(e) => modifierTrajetTemp("destination", e.target.value)}
                     autoComplete="off"
