@@ -4347,3 +4347,28 @@ h2 {
 .trajetDepartFixe small {
   color: var(--texteSecondaire, #6b7280);
 }
+
+/* Pilotage UM — entête allégée avec exports à droite */
+.enteteAvecExports {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.actionsExportEntete {
+  margin-top: 0;
+  align-self: flex-start;
+}
+
+@media (max-width: 760px) {
+  .enteteAvecExports {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .actionsExportEntete {
+    justify-content: flex-start;
+  }
+}

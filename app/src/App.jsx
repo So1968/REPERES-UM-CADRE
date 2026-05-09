@@ -1202,23 +1202,13 @@ export default function App() {
 
   return (
     <main className="page notranslate" translate="no">
-      <header className="entete">
+      <header className="entete enteteAvecExports">
         <div>
-          <p className="surTitre">Outil cadre de pilotage pour l’Unité Mobile</p>
           <h1>Pilotage UM</h1>
           <p className="sousTitreEntete">Charge, attribution, parcours, alertes et continuité.</p>
         </div>
-      </header>
 
-      <details className="bloc blocSauvegardeExport">
-        <summary className="resumeBloc">
-          <div>
-            <h2>Sauvegarde / export</h2>
-            <p>Exporter, importer ou récupérer les données locales de ce navigateur.</p>
-          </div>
-        </summary>
-
-        <div className="actionsExport actionsExportDiscretes" aria-label="Sauvegarde et exports">
+        <div className="actionsExport actionsExportDiscretes actionsExportEntete" aria-label="Sauvegarde et exports">
           <button type="button" className="boutonLienExport" onClick={exporterJson}>
             Export JSON
           </button>
@@ -1236,7 +1226,7 @@ export default function App() {
             Export CSV
           </button>
         </div>
-      </details>
+      </header>
 
       <section className="bandeauSynthese bandeauSyntheseSix" aria-label="Synthèse cadre">
         <article className="carteSynthese">
