@@ -1737,7 +1737,7 @@ export default function App() {
                       disabled={!structureTrajetSelection}
                       onClick={() => modifierStructureTrajetExistante(structureTrajetSelection)}
                     >
-                      Modifier la structure sélectionnée
+                      Modifier
                     </button>
                   </div>
 

@@ -4531,3 +4531,8 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+.selectionStructureTrajet button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
