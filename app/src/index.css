@@ -4536,3 +4536,8 @@ h2 {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+.selectionStructureTrajet button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
