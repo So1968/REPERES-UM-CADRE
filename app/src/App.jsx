@@ -1560,10 +1560,6 @@ export default function App() {
 
             <div className="sousBlocForm trajetCadre">
               <h3>Outil trajet cadre</h3>
-              <p className="rappelRegle">
-                Le départ est fixé au Centre Hospitalier Le Vinatier. L’adresse du lieu sert uniquement au calcul.
-                Seuls les kilomètres et les minutes estimés sont conservés.
-              </p>
 
               <div className="calculateurTrajet">
                 <div className="champ trajetDepartFixe">
