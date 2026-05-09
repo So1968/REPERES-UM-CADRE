@@ -1,10 +1,10 @@
-# Repères UM 2.0 — cadre
+# Pilotage UM — cadre
 
 Outil personnel cadre pour l’Unité Mobile.
 
 ## Positionnement
 
-Repères UM 2.0 n’est pas un DPI, pas un dossier patient, pas un outil de soin et pas un outil de surveillance.
+Pilotage UM n’est pas un DPI, pas un dossier patient, pas un outil de soin et pas un outil de surveillance.
 
 C’est un tableau personnel cadre, non nominatif, d’organisation, d’alertes, de charge, de continuité, d’harmonisation des pratiques et d’aide à l’attribution.
 
@@ -88,7 +88,7 @@ C’est un tableau personnel cadre, non nominatif, d’organisation, d’alertes
 - Export CSV = bilan / extraction.
 - Ne jamais mettre les sauvegardes réelles dans Git.
 
-Stockage conseillé : `Documents / Repères UM` + copie clé USB-C ou disque externe.
+Stockage conseillé : `Documents / Pilotage UM` + copie clé USB-C ou disque externe.
 
 
 ## Module ajouté — Absences / roulement

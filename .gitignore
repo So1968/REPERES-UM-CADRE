@@ -2,22 +2,25 @@
 node_modules/
 app/node_modules/
 
-# Build
-dist/
+# Builds locaux
 app/dist/
+dist/
 
-# Environnement
-.env
-.env.local
+# Documents réels / exports / archives à ne jamais versionner
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*.zip
+/*.html
 
-# Quarantaine locale
-_quarantaine-fichiers-parasites/
-
-# Sauvegardes locales réelles
-*.json.backup
-*_backup.json
-sauvegarde*.json
+# Artefacts accidentels de terminal / npm
+app/app@*
+app/vite
 
 # Système
 .DS_Store
-Thumbs.db
+
+# Quarantaine locale — ne pas versionner
+_quarantaine-fichiers-parasites/

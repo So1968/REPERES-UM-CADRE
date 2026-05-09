@@ -1,6 +1,6 @@
-# Application Repères UM 2.0
+# Application Pilotage UM
 
-Application React/Vite locale pour l’outil cadre Repères UM 2.0.
+Application React/Vite locale pour l’outil cadre Pilotage UM.
 
 ## Lancer l’app
 
