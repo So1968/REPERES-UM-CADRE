@@ -1,8 +1,8 @@
-# Repères UM 2.0 — Indice interne de vigilance charge
+# Pilotage UM — Indice interne de vigilance charge
 
 ## Positionnement
 
-L’indice de vigilance charge de Repères UM 2.0 est un repère cadre interne.
+L’indice de vigilance charge de Pilotage UM est un repère cadre interne.
 
 Il n’est pas :
 - un score officiel ;
@@ -18,7 +18,7 @@ La qualification d’une surcharge éventuelle ne relève pas de l’outil seul.
 
 ## Principe général
 
-Repères UM 2.0 distingue toujours :
+Pilotage UM distingue toujours :
 
 - charge effective actuelle ;
 - charge prévisionnelle ;
@@ -59,7 +59,7 @@ Sources à citer dans les documents projet :
 - HAS / ANESM — Recommandations sur les comportements-problèmes au sein des établissements et services accueillant des enfants et adultes handicapés.
 - ANAP — Transformation de l’offre médico-sociale et pilotage des organisations.
 
-Ces sources ne valident pas le barème chiffré de Repères UM 2.0.  
+Ces sources ne valident pas le barème chiffré de Pilotage UM.  
 Le barème est un choix interne de l’Unité Mobile, à valider localement.
 
 ## Éléments objectivables retenus
@@ -154,6 +154,6 @@ Cette lecture ne constitue pas une déclaration automatique de surcharge.
 
 ## Phrase de sécurisation
 
-Repères UM 2.0 ne déclare pas seul une surcharge professionnelle.  
+Pilotage UM ne déclare pas seul une surcharge professionnelle.  
 Il signale des points de vigilance à partir d’éléments objectivables.  
 La qualification d’une surcharge relève d’un arbitrage cadre, partagé et validé selon les repères internes de l’Unité Mobile.

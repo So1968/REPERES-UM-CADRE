@@ -1,6 +1,6 @@
-# Repères UM 2.0 — Spécification V1
+# Pilotage UM — Spécification V1
 
-Repères UM 2.0 est un outil personnel cadre pour l’Unité Mobile.
+Pilotage UM est un outil personnel cadre pour l’Unité Mobile.
 
 ## Principe central
 
@@ -30,11 +30,11 @@ Puis :
 
 ```bash
 cat > docs/regles-confidentialite.md <<'EOF'
-# Repères UM 2.0 — Règles de confidentialité
+# Pilotage UM — Règles de confidentialité
 
 ## Principe
 
-Repères UM 2.0 est un outil non nominatif.
+Pilotage UM est un outil non nominatif.
 
 Aucune donnée permettant d’identifier une personne ne doit être saisie, stockée ou exportée.
 

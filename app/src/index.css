@@ -3114,7 +3114,7 @@ textarea:focus {
 }
 
 
-/* V10 EMA / Cadre — accueil synthétique, modules pliés, alignements harmonisés */
+/* V10 Pilotage UM — accueil synthétique, modules pliés, alignements harmonisés */
 .bandeauSyntheseQuatre {
   grid-template-columns: repeat(4, 1fr) !important;
 }

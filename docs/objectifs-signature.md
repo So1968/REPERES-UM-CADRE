@@ -1,4 +1,4 @@
-# Repères UM 2.0 — Objectifs signature
+# Pilotage UM — Objectifs signature
 
 ## Fonction du module
 
@@ -52,7 +52,7 @@ Les objectifs définis à la signature ne signifient pas que la situation est co
 - Réévaluer le traitement médicamenteux
 - Préparer relais ESMS / domicile / soins
 
-## Usage dans Repères UM 2.0
+## Usage dans Pilotage UM
 
 Les objectifs signature servent à préparer le démarrage.
 
