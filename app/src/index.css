@@ -4372,3 +4372,105 @@ h2 {
     justify-content: flex-start;
   }
 }
+
+/* Pilotage UM — carnet adresses structures */
+.carnetStructuresTrajet {
+  border: 1px solid var(--bordure, #e5e7eb);
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.58);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.enteteCarnetStructures {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.enteteCarnetStructures h4 {
+  margin: 0;
+}
+
+.listeStructuresTrajet {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 0.55rem;
+}
+
+.carteStructureTrajet {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.boutonStructureTrajet {
+  border: 1px solid var(--bordure, #e5e7eb);
+  border-radius: 12px;
+  padding: 0.6rem;
+  background: white;
+  text-align: left;
+  display: grid;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.boutonStructureTrajet:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.boutonStructureTrajet strong {
+  font-size: 0.92rem;
+}
+
+.boutonStructureTrajet span,
+.boutonStructureTrajet small {
+  font-size: 0.78rem;
+  color: var(--texteSecondaire, #6b7280);
+}
+
+.miniBoutonStructure {
+  border: 0;
+  background: transparent;
+  font-size: 0.78rem;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+  color: var(--texteSecondaire, #6b7280);
+}
+
+.formStructureTrajet {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--bordure, #e5e7eb);
+}
+
+.actionsStructureTrajet {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+  .enteteCarnetStructures {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .listeStructuresTrajet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .formStructureTrajet {
+    grid-template-columns: 1fr;
+  }
+
+  .actionsStructureTrajet {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
