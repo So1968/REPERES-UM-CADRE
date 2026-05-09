@@ -68,6 +68,7 @@ const presences = ["présente", "absence planifiée", "arrêt maladie", "absence
 const typesAbsence = ["", "congé planifié", "formation", "arrêt maladie", "absence imprévue", "autre absence cadre"];
 const modalites = ["Structure", "VAD", "Mixte", "Non défini"];
 const periodesTrajet = ["Non renseigné", "Heures creuses", "Heures de pointe", "Variable"];
+const VINATIER_ADRESSE_TRAJET = "Centre Hospitalier Le Vinatier, 95 boulevard Pinel, 69500 Bron";
 const circulations = ["Non renseigné", "fluide", "modérée", "dense", "très dense"];
 const mobilisations = ["faible", "modéré", "élevé", "très élevé"];
 const coordinations = ["simple", "régulier", "complexe", "très complexe"];
@@ -543,7 +544,7 @@ export default function App() {
   const [objectifsSelectionnes, setObjectifsSelectionnes] = useState([]);
   const [commentaireObjectifs, setCommentaireObjectifs] = useState("");
   const [trajetTemp, setTrajetTemp] = useState({
-    depart: "",
+    depart: VINATIER_ADRESSE_TRAJET,
     destination: "",
     chargement: false,
     message: "",
@@ -795,13 +796,14 @@ export default function App() {
   }
 
   async function lancerCalculTrajetTemporaire() {
-    const depart = trajetTemp.depart.trim();
+    const depart = VINATIER_ADRESSE_TRAJET;
     const destination = trajetTemp.destination.trim();
 
-    if (!depart || !destination) {
+    if (!destination) {
       setTrajetTemp((actuel) => ({
         ...actuel,
-        message: "Renseigner l’adresse temporaire de départ et celle du lieu. Elles ne seront pas enregistrées.",
+        depart,
+        message: "Renseigner l’adresse du lieu. Le départ est fixé au Vinatier.",
       }));
       return;
     }
@@ -823,10 +825,10 @@ export default function App() {
       }));
 
       setTrajetTemp({
-        depart: "",
+        depart: VINATIER_ADRESSE_TRAJET,
         destination: "",
         chargement: false,
-        message: `Trajet estimé : ${resultat.km} km aller · ${resultat.minutes} min aller. Les adresses temporaires ont été effacées.`,
+        message: `Trajet estimé : ${resultat.km} km aller · ${resultat.minutes} min aller. L’adresse du lieu a été effacée.`,
       });
     } catch (erreur) {
       setTrajetTemp((actuel) => ({
@@ -840,10 +842,10 @@ export default function App() {
 
   function effacerAdressesTrajetTemporaire() {
     setTrajetTemp({
-      depart: "",
+      depart: VINATIER_ADRESSE_TRAJET,
       destination: "",
       chargement: false,
-      message: "Adresses temporaires effacées. Aucun stockage dans la fiche.",
+      message: "Adresse du lieu effacée. Le départ reste fixé au Vinatier.",
     });
   }
 
@@ -1569,21 +1571,16 @@ export default function App() {
             <div className="sousBlocForm trajetCadre">
               <h3>Outil trajet cadre</h3>
               <p className="rappelRegle">
-                L’adresse peut être utilisée uniquement pour calculer. Elle n’est pas enregistrée dans la fiche.
+                Le départ est fixé au Centre Hospitalier Le Vinatier. L’adresse du lieu sert uniquement au calcul.
                 Seuls les kilomètres et les minutes estimés sont conservés.
               </p>
 
               <div className="calculateurTrajet">
-                <label className="champ">
-                  <span>Adresse temporaire de départ</span>
-                  <input
-                    type="text"
-                    placeholder="ex : hôpital / site de départ"
-                    value={trajetTemp.depart}
-                    onChange={(e) => modifierTrajetTemp("depart", e.target.value)}
-                    autoComplete="off"
-                  />
-                </label>
+                <div className="champ trajetDepartFixe">
+                  <span>Départ fixe</span>
+                  <strong>Centre Hospitalier Le Vinatier</strong>
+                  <small>95 boulevard Pinel — 69500 Bron</small>
+                </div>
 
                 <label className="champ">
                   <span>Adresse temporaire du lieu</span>
@@ -1611,7 +1608,7 @@ export default function App() {
                 </div>
 
                 <p className="noteTrajetTemp">
-                  Calcul via un service cartographique externe. Pilotage UM ne stocke pas l’adresse saisie.
+                  Calcul via un service cartographique externe. Pilotage UM ne stocke pas l’adresse du lieu saisie.
                 </p>
 
                 {trajetTemp.message && <p className="messageTrajetTemp">{trajetTemp.message}</p>}

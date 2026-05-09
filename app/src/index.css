@@ -4332,3 +4332,18 @@ h2 {
     text-align: center;
   }
 }
+
+/* Pilotage UM — départ fixe trajet */
+.trajetDepartFixe {
+  border: 1px solid var(--bordure, #e5e7eb);
+  border-radius: 14px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.7);
+  display: grid;
+  gap: 0.15rem;
+}
+
+.trajetDepartFixe span,
+.trajetDepartFixe small {
+  color: var(--texteSecondaire, #6b7280);
+}
