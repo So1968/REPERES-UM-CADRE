@@ -2404,6 +2404,31 @@ export default function App() {
           </details>
         </section>
 
+        {situationsASeecuriser.length > 0 && (
+          <section className="sectionFusionEquipe sectionContinuiteFusion">
+          <div className="titreBloc">
+            <h2>Continuité à sécuriser</h2>
+            <p>Situations portées par une professionnelle absente ou non mobilisable sans relais renseigné.</p>
+          </div>
+
+          <div className="listeRelais">
+            {situationsASeecuriser.map((s) => {
+              const p = parcours(s);
+              return (
+                <article className="carteRelais" key={s.id}>
+                  <strong>{s.code}</strong>
+                  <span>Référente {s.referentCode} · Binôme {s.binomeCode || "—"}</span>
+                  <span>Signature {dateLocale(s.dateSignature)} · Mi-parcours {dateLocale(p.miParcours)} · Synthèse {dateLocale(p.syntheseProgrammee)}</span>
+                  <button type="button" className="boutonSecondaire" onClick={() => preparerModification(s)}>
+                    Organiser le relais
+                  </button>
+                </article>
+              );
+            })}
+          </div>
+          </section>
+        )}
+
         <section className="sectionFusionEquipe">
           <div className="titreSousSectionFusion">
             <h3>Départager une attribution</h3>
@@ -2554,30 +2579,7 @@ export default function App() {
 
 
 
-      {situationsASeecuriser.length > 0 && (
-        <section className="bloc blocAlerte">
-          <div className="titreBloc">
-            <h2>Continuité à sécuriser</h2>
-            <p>Situations portées par une professionnelle absente ou non mobilisable sans relais renseigné.</p>
-          </div>
 
-          <div className="listeRelais">
-            {situationsASeecuriser.map((s) => {
-              const p = parcours(s);
-              return (
-                <article className="carteRelais" key={s.id}>
-                  <strong>{s.code}</strong>
-                  <span>Référente {s.referentCode} · Binôme {s.binomeCode || "—"}</span>
-                  <span>Signature {dateLocale(s.dateSignature)} · Mi-parcours {dateLocale(p.miParcours)} · Synthèse {dateLocale(p.syntheseProgrammee)}</span>
-                  <button type="button" className="boutonSecondaire" onClick={() => preparerModification(s)}>
-                    Organiser le relais
-                  </button>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-      )}
 
 
 
