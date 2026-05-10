@@ -1421,6 +1421,10 @@ export default function App() {
               );
               const delaiUM = delaiTotal === "" ? "" : Math.max(0, Number(delaiTotal) - Number(delaiSuspendu || 0));
               const retardESMS = delaiSuspendu === "" ? 0 : Number(delaiSuspendu);
+              const referenceReponseUM = situation.dateAcceptationUM || aujourdHuiISO();
+              const delaiReponseTotal = joursEntre(situation.dateSollicitation, referenceReponseUM);
+              const tempsReponseUM =
+                delaiReponseTotal === "" ? "" : Math.max(0, Number(delaiReponseTotal) - Number(retardESMS || 0));
 
               return (
                 <details className="carteSituation carteSituationRepliee" key={situation.id}>
@@ -1443,6 +1447,7 @@ export default function App() {
 
                       {alerte && <span className={badgeClasse("alerte")}>{alerte}</span>}
                       {retardESMS > 0 && <span className={badgeClasse("alerte")}>ESMS +{retardESMS} j</span>}
+                      {tempsReponseUM !== "" && <span className={badgeClasse("avenir")}>Réponse UM {tempsReponseUM} j</span>}
                     </div>
 
                     <div className="resumeSituationLecture">
@@ -1553,6 +1558,7 @@ export default function App() {
                     <div className="delaisCompact">
                       <span>Délai total sollicitation → signature : <b>{delaiTotal || "—"}</b> j</span>
                       <span>Retard ESMS / attente externe : <b>{delaiSuspendu || "—"}</b> j</span>
+                      <span>Temps réponse UM : <b>{tempsReponseUM === "" ? "—" : `${tempsReponseUM} j`}</b></span>
                       <span>Délai UM hors suspension : <b>{delaiUM || "—"}</b> j</span>
                     </div>
 
