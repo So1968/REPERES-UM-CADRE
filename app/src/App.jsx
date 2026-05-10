@@ -2284,7 +2284,7 @@ export default function App() {
                       <div><span>Score ajusté</span><b>{scoreAjuste}</b></div>
                     </div>
 
-                    <div className="blocPresencePro">
+                    <div className={item.presence === "présente" ? "blocPresencePro blocPresenceProOk" : "blocPresencePro blocPresenceProAlerte"}>
                       <h4>Présence / continuité</h4>
 
                       <label className="champ">
