@@ -4623,3 +4623,84 @@ h2 {
   opacity: 0.28;
   cursor: not-allowed;
 }
+
+/* Pilotage UM — confort visuel bloc trajet */
+.trajetCadre {
+  font-size: 0.92rem;
+}
+
+.trajetCadre h3 {
+  font-size: 1rem;
+  margin-bottom: 0.55rem;
+}
+
+.trajetDepartFixe {
+  padding: 0.65rem 0.75rem !important;
+}
+
+.trajetDepartFixe span,
+.enteteCarnetStructures h4,
+.trajetCadre .champ span {
+  font-size: 0.82rem !important;
+  line-height: 1.15;
+}
+
+.trajetDepartFixe strong {
+  font-size: 0.95rem;
+}
+
+.trajetDepartFixe small {
+  font-size: 0.78rem;
+}
+
+.carnetStructuresTrajet {
+  padding: 0.7rem !important;
+  gap: 0.55rem !important;
+}
+
+.selectionStructureTrajet {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 0.45rem !important;
+}
+
+.trajetCadre input,
+.trajetCadre select {
+  font-size: 0.9rem;
+  min-height: 2.45rem;
+  padding: 0.45rem 0.65rem;
+}
+
+.actionsTrajetTemp {
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.actionsTrajetTemp .boutonPrincipal {
+  font-size: 0.9rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.actionsTrajetTemp .boutonSecondaire {
+  width: 2.15rem;
+  min-width: 2.15rem;
+  height: 2.15rem;
+  padding: 0;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.trajetCadre > .ligneDeux {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.55rem !important;
+}
+
+.trajetCadre > .ligneDeux .champ {
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .trajetCadre > .ligneDeux {
+    grid-template-columns: 1fr !important;
+  }
+}

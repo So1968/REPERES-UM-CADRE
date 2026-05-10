@@ -1685,7 +1685,7 @@ export default function App() {
             </div>
 
             <div className="sousBlocForm trajetCadre">
-              <h3>Outil trajet cadre</h3>
+              <h3>Outil trajet</h3>
 
               <div className="calculateurTrajet">
                 <div className="champ trajetDepartFixe">
@@ -1820,20 +1820,16 @@ export default function App() {
                     {trajetTemp.chargement ? "Calcul…" : "Calculer km / minutes"}
                   </button>
                   <button type="button" className="boutonSecondaire" onClick={effacerAdressesTrajetTemporaire}>
-                    Effacer les adresses
+                    ×
                   </button>
                 </div>
-
-                <p className="noteTrajetTemp">
-                  La fiche conserve seulement les kilomètres et les minutes estimés.
-                </p>
 
                 {trajetTemp.message && <p className="messageTrajetTemp">{trajetTemp.message}</p>}
               </div>
 
               <div className="ligneDeux">
                 <label className="champ">
-                  <span>Km aller estimés</span>
+                  <span>Km aller</span>
                   <input
                     type="number"
                     min="0"
@@ -1845,7 +1841,7 @@ export default function App() {
                 </label>
 
                 <label className="champ">
-                  <span>Minutes aller estimées</span>
+                  <span>Minutes aller</span>
                   <input
                     type="number"
                     min="0"
@@ -1858,7 +1854,7 @@ export default function App() {
 
               <div className="ligneDeux">
                 <label className="champ">
-                  <span>Période de trajet</span>
+                  <span>Période</span>
                   <select value={form.periodeTrajet} onChange={(e) => modifierForm("periodeTrajet", e.target.value)}>
                     {periodesTrajet.map((periode) => (
                       <option key={periode} value={periode}>
@@ -1869,7 +1865,7 @@ export default function App() {
                 </label>
 
                 <label className="champ">
-                  <span>Circulation estimée</span>
+                  <span>Circulation</span>
                   <select value={form.circulation} onChange={(e) => modifierForm("circulation", e.target.value)}>
                     {circulations.map((circulation) => (
                       <option key={circulation} value={circulation}>
