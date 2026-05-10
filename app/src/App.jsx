@@ -344,6 +344,15 @@ function scoreNiveau(valeur) {
   }
 }
 
+function alerteCadreDepuisMobilisationCoordination(mobilisation, coordination) {
+  const score = scoreNiveau(mobilisation) + scoreNiveau(coordination);
+
+  if (mobilisation === "très élevé" || coordination === "très complexe" || score >= 5) return "rouge";
+  if (score >= 3) return "orange";
+  if (score >= 2) return "bleue";
+  return "aucune";
+}
+
 function scoreAlerte(alerte) {
   if (alerte === "rouge") return 3;
   if (alerte === "orange") return 1;
@@ -1151,7 +1160,7 @@ export default function App() {
       vadParSemaine: form.vadParSemaine,
       niveauMobilisation: form.niveauMobilisation,
       niveauCoordination: form.niveauCoordination,
-      alerte: form.alerte,
+      alerte: alerteCadreDepuisMobilisationCoordination(form.niveauMobilisation, form.niveauCoordination),
 
       relaisCode: form.relaisCode,
       relaisDebut: form.relaisDebut,
@@ -1877,40 +1886,61 @@ export default function App() {
               </div>
             </div>
 
-            <div className="ligneDeux">
-              <label className="champ">
-                <span>Mobilisation</span>
-                <select value={form.niveauMobilisation} onChange={(e) => modifierForm("niveauMobilisation", e.target.value)}>
-                  {mobilisations.map((niveau) => (
-                    <option key={niveau} value={niveau}>
-                      {niveau}
-                    </option>
-                  ))}
-                </select>
-              </label>
+            <div className="sousBlocForm blocImpactCadre">
+              <h3>Mobilisation / coordination / alerte</h3>
 
-              <label className="champ">
-                <span>Coordination</span>
-                <select value={form.niveauCoordination} onChange={(e) => modifierForm("niveauCoordination", e.target.value)}>
-                  {coordinations.map((niveau) => (
-                    <option key={niveau} value={niveau}>
-                      {niveau}
+              <div className="ligneDeux">
+                <label className="champ">
+                  <span>Mobilisation</span>
+                  <select
+                    value={form.niveauMobilisation}
+                    onChange={(e) => {
+                      const niveau = e.target.value;
+                      modifierForm("niveauMobilisation", niveau);
+                      modifierForm("alerte", alerteCadreDepuisMobilisationCoordination(niveau, form.niveauCoordination));
+                    }}
+                  >
+                    {mobilisations.map((niveau) => (
+                      <option key={niveau} value={niveau}>
+                        {niveau}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="champ">
+                  <span>Coordination</span>
+                  <select
+                    value={form.niveauCoordination}
+                    onChange={(e) => {
+                      const niveau = e.target.value;
+                      modifierForm("niveauCoordination", niveau);
+                      modifierForm("alerte", alerteCadreDepuisMobilisationCoordination(form.niveauMobilisation, niveau));
+                    }}
+                  >
+                    {coordinations.map((niveau) => (
+                      <option key={niveau} value={niveau}>
+                        {niveau}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              <label className="champ champAlerteAuto">
+                <span>Alerte cadre</span>
+                <select
+                  value={alerteCadreDepuisMobilisationCoordination(form.niveauMobilisation, form.niveauCoordination)}
+                  disabled
+                >
+                  {alertes.map((alerte) => (
+                    <option key={alerte} value={alerte}>
+                      {alerte}
                     </option>
                   ))}
                 </select>
               </label>
             </div>
-
-            <label className="champ">
-              <span>Alerte cadre</span>
-              <select value={form.alerte} onChange={(e) => modifierForm("alerte", e.target.value)}>
-                {alertes.map((alerte) => (
-                  <option key={alerte} value={alerte}>
-                    {alerte}
-                  </option>
-                ))}
-              </select>
-            </label>
           </section>
 
           <section className="colonneForm">
