@@ -2409,52 +2409,91 @@ export default function App() {
 
         <p className="noteCadre noteAttribution">{propositionAttribution.message}</p>
 
-        <div className="listeAttribution">
-          {propositionAttribution.classement
-            .slice()
-            .sort((a, b) => {
-              if (a.proposable !== b.proposable) return a.proposable ? -1 : 1;
-              if (a.scoreAjuste !== b.scoreAjuste) return a.scoreAjuste - b.scoreAjuste;
-              return a.code.localeCompare(b.code);
-            })
-            .map((item) => {
-              const proposee = propositionAttribution.proposee?.code === item.code;
-              return (
-                <details key={item.code} className={proposee ? "carteAttribution proposee" : "carteAttribution"}>
-                  <summary className="resumeAttribution">
-                    <div className="resumeAttributionPrincipal">
-                      <strong>{item.code}</strong>
-                      <span>{item.metier}</span>
-                      {proposee && <span className="badgeAttribution">Proposée</span>}
-                    </div>
-                    <div className="resumeAttributionSecondaire">
-                      <span>Score brut {item.score.toFixed(1)}</span>
-                      <span>{item.proposable ? `Score ajusté ${item.scoreAjuste.toFixed(1)}` : "Non proposée"}</span>
-                      <span>{item.presence}</span>
-                    </div>
-                  </summary>
+        <div className="attributionComparatif">
+          {propositionAttribution.proposee && (
+            <div className="bandeauPropositionAttribution">
+              <span>Proposition outil</span>
+              <strong>{propositionAttribution.proposee.code}</strong>
+              <em>Validation cadre nécessaire</em>
+            </div>
+          )}
 
-                  <div className="detailsAttribution">
-                    <div>
-                      <span>Présence renseignée</span>
-                      <b>{item.presence}</b>
+          <div className="tableAttributionCompare">
+            <div className="ligneAttributionCompare enteteAttributionCompare">
+              <span>Agent</span>
+              <span>Score</span>
+              <span>Eff.</span>
+              <span>Prév.</span>
+              <span>Sorties</span>
+              <span>VAD</span>
+              <span>Présence</span>
+              <span>Lecture</span>
+            </div>
+
+            {propositionAttribution.classement
+              .slice()
+              .sort((a, b) => {
+                if (a.proposable !== b.proposable) return a.proposable ? -1 : 1;
+                if (a.scoreAjuste !== b.scoreAjuste) return a.scoreAjuste - b.scoreAjuste;
+                return a.code.localeCompare(b.code);
+              })
+              .map((item) => {
+                const proposee = propositionAttribution.proposee?.code === item.code;
+                const scoreAffiche = item.proposable && Number.isFinite(item.scoreAjuste)
+                  ? item.scoreAjuste.toFixed(1)
+                  : "—";
+
+                return (
+                  <details key={item.code} className={proposee ? "carteAttributionLigne proposee" : "carteAttributionLigne"}>
+                    <summary className="ligneAttributionCompare">
+                      <span className="celluleAgentAttribution">
+                        <strong>{item.code}</strong>
+                        {proposee && <b>proposée</b>}
+                      </span>
+                      <span>{scoreAffiche}</span>
+                      <span>{item.effectives}</span>
+                      <span>{item.preparatoires}</span>
+                      <span>{item.sorties15}</span>
+                      <span>{item.vadSemaine}</span>
+                      <span>{item.presence}</span>
+                      <span>{item.proposable ? item.lecture : "Non proposée"}</span>
+                    </summary>
+
+                    <div className="detailsAttribution detailsAttributionCompare">
+                      <div>
+                        <span>Score brut</span>
+                        <b>{item.score.toFixed(1)}</b>
+                      </div>
+                      <div>
+                        <span>Disponibilité</span>
+                        <b>{item.disponibilitePct || "100"} %</b>
+                      </div>
+                      <div>
+                        <span>Trajets élevés</span>
+                        <b>{item.trajetsEleves}</b>
+                      </div>
+                      <div>
+                        <span>Alertes</span>
+                        <b>{item.alertes}</b>
+                      </div>
+                      <div>
+                        <span>Relais portés</span>
+                        <b>{item.relaisPortes}</b>
+                      </div>
+                      <div>
+                        <span>Lecture</span>
+                        <b>{item.lecture}</b>
+                      </div>
+
+                      <p className={proposee ? "noteAttributionInterne proposee" : "noteAttributionInterne"}>
+                        {item.disponibiliteLecture}
+                        {proposee ? " · Professionnelle actuellement proposée pour rééquilibrage." : ""}
+                      </p>
                     </div>
-                    <div>
-                      <span>Disponibilité</span>
-                      <b>{item.disponibilitePct || "100"} %</b>
-                    </div>
-                    <div>
-                      <span>Lecture</span>
-                      <b>{item.lecture}</b>
-                    </div>
-                    <p className={proposee ? "noteAttributionInterne proposee" : "noteAttributionInterne"}>
-                      {item.disponibiliteLecture}
-                      {proposee ? " · Professionnelle actuellement proposée pour rééquilibrage." : ""}
-                    </p>
-                  </div>
-                </details>
-              );
-            })}
+                  </details>
+                );
+              })}
+          </div>
         </div>
         </section>
       </details>
