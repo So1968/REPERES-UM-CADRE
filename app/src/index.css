@@ -4764,3 +4764,79 @@ h2 {
     grid-template-columns: 1fr !important;
   }
 }
+
+/* Pilotage UM — harmonisation visuelle saisie rapide */
+.formulaire {
+  font-size: 0.9rem;
+}
+
+.formulaire h3,
+.colonneForm h3,
+.sousBlocForm h3 {
+  font-size: 0.96rem !important;
+  line-height: 1.2;
+  margin-bottom: 0.55rem;
+}
+
+.formulaire .champ span,
+.formulaire label span,
+.sousBlocForm .champ span,
+.colonneForm .champ span {
+  font-size: 0.82rem !important;
+  line-height: 1.15;
+  font-weight: 650;
+}
+
+.formulaire input,
+.formulaire select,
+.formulaire textarea {
+  font-size: 0.88rem !important;
+  line-height: 1.2;
+}
+
+.formulaire input::placeholder,
+.formulaire textarea::placeholder {
+  font-size: 0.86rem !important;
+}
+
+.formulaire .ligneDeux,
+.formulaire .ligneTrois {
+  gap: 0.55rem !important;
+}
+
+.formulaire .champ {
+  gap: 0.28rem;
+}
+
+/* Cadre rose doux pour mobilisation / coordination / alerte */
+.blocImpactCadre {
+  background: rgba(252, 231, 243, 0.42) !important;
+  border: 1px solid rgba(244, 114, 182, 0.34) !important;
+  border-radius: 14px;
+  padding: 0.85rem;
+}
+
+.blocImpactCadre h3 {
+  color: #6f2d4f;
+}
+
+.blocImpactCadre .champAlerteAuto select {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* Destination : lisible mais moins massive */
+.enteteCarnetStructures h4,
+.selectionStructureTrajet .champ > span {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+.selectionStructureTrajet select {
+  font-size: 0.88rem !important;
+}
+
+/* Boutons trajet plus calmes */
+.actionsTrajetTemp .boutonPrincipal,
+.actionsTrajetTemp .boutonSecondaire {
+  font-size: 0.88rem !important;
+}
