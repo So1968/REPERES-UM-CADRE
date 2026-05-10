@@ -5149,3 +5149,47 @@ h2 {
   border-radius: 999px;
   padding: 0.15rem 0.42rem;
 }
+
+/* Pilotage UM — fusion douce équipe, continuité & attribution */
+.blocEquipeAttribution {
+  border-color: rgba(99, 102, 241, 0.22);
+}
+
+.sectionFusionEquipe {
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.titreSousSectionFusion {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.titreSousSectionFusion h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.15;
+}
+
+.titreSousSectionFusion span {
+  font-size: 0.78rem;
+  color: var(--texteSecondaire, #64748b);
+}
+
+.blocEquipeAttribution .resumeBloc span {
+  font-size: 0.8rem;
+  color: var(--texteSecondaire, #64748b);
+}
+
+@media (max-width: 760px) {
+  .titreSousSectionFusion {
+    display: grid;
+  }
+}

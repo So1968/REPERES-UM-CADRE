@@ -2158,18 +2158,25 @@ export default function App() {
           </div>
         </form>
       </details>
-      <details className="bloc blocRepliable">
+      <details className="bloc blocRepliable blocEquipeAttribution">
         <summary className="resumeBloc">
           <div>
-            <h2>Charge équipe</h2>
+            <h2>Équipe, continuité & attribution</h2>
+            <span>Charge, disponibilité et départage d’une nouvelle attribution.</span>
           </div>
         </summary>
 
         <div className="titreBloc titreBlocInterne">
-          <h2>Charge équipe</h2>
+          <h2>Équipe, continuité & attribution</h2>
         </div>
 
-        <div className="grilleCharge">
+        <section className="sectionFusionEquipe">
+          <div className="titreSousSectionFusion">
+            <h3>Charge équipe</h3>
+            <span>Lecture effective et prévisionnelle.</span>
+          </div>
+
+          <div className="grilleCharge">
           {chargeProfessionnels.map((item) => {
             const scoreAjuste = Number.isFinite(item.scoreAjuste) ? item.scoreAjuste.toFixed(1) : "—";
             const resumeCharge = `${item.effectives} effectives · ${item.preparatoires} préparatoires · ${item.sorties15} sorties J+15`;
@@ -2232,20 +2239,16 @@ export default function App() {
               </details>
             );
           })}
-        </div>
-      </details>
-      <details className="bloc blocRepliable">
-        <summary className="resumeBloc">
-          <div>
-            <h2>Disponibilité équipe et continuité</h2>
           </div>
-        </summary>
+        </section>
 
-        <div className="titreBloc titreBlocInterne">
-          <h2>Disponibilité équipe et continuité</h2>
-        </div>
+        <section className="sectionFusionEquipe">
+          <div className="titreSousSectionFusion">
+            <h3>Disponibilité & continuité</h3>
+            <span>Présences, absences, relais et sécurisation.</span>
+          </div>
 
-        <div className="grilleEquipe">
+          <div className="grilleEquipe">
           {equipe.map((pro) => {
             const dispo = statutDisponibilite(pro, dateAttributionReference);
             const absenceTexte = pro.presence === "présente"
@@ -2378,18 +2381,13 @@ export default function App() {
             Les membres retirés disparaissent de l’équipe active. Les anciennes fiches conservent leur code si elles étaient déjà renseignées.
           </p>
         </details>
+        </section>
 
-      </details>
-      <details className="bloc blocRepliable">
-        <summary className="resumeBloc">
-          <div>
-            <h2>Aide à l’attribution</h2>
+        <section className="sectionFusionEquipe">
+          <div className="titreSousSectionFusion">
+            <h3>Départager une attribution</h3>
+            <span>Comparer les scores et disponibilités avant validation cadre.</span>
           </div>
-        </summary>
-
-        <div className="titreBloc titreBlocInterne">
-          <h2>Aide à l’attribution</h2>
-        </div>
 
         <div className="aideAttribution aideAttributionCompacte">
           <label className="champ">
@@ -2458,6 +2456,7 @@ export default function App() {
               );
             })}
         </div>
+        </section>
       </details>
       <details className="bloc blocRepliable blocBilanArs">
         <summary className="resumeBloc">
