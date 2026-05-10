@@ -1971,9 +1971,68 @@ export default function App() {
               <input type="date" value={form.dateSignature} onChange={(e) => modifierForm("dateSignature", e.target.value)} />
             </label>
 
-            <div className="rappelRegle">
-              Sans signature : parcours non démarré. La synthèse est programmée d’office à J+75.
-            </div>
+            {(() => {
+              const parcoursForm = parcours(form);
+              const referenceDelai = form.dateSignature || aujourdHuiISO();
+              const delaiTotalForm = joursEntre(form.dateSollicitation, referenceDelai);
+              const delaiSuspenduForm = joursEntre(form.dateDemandeComplementESMS, form.dateRetourESMS);
+              const delaiUMForm =
+                delaiTotalForm === "" ? "" : Math.max(0, Number(delaiTotalForm) - Number(delaiSuspenduForm || 0));
+              const retardFinForm =
+                parcoursForm.finTheorique && !form.dateFinReelle
+                  ? Math.max(0, -(joursAvant(parcoursForm.finTheorique) || 0))
+                  : 0;
+
+              return (
+                <details className="blocParcoursSaisie" open={!!form.dateSignature}>
+                  <summary>
+                    <strong>{form.dateSignature ? "Parcours automatique" : "Parcours non démarré"}</strong>
+                    <span>
+                      {form.dateSignature
+                        ? `J+90 : ${dateLocale(parcoursForm.finTheorique)}`
+                        : delaiTotalForm !== ""
+                          ? `Délai accumulé : ${delaiTotalForm} j`
+                          : "Démarrage effectif non renseigné"}
+                    </span>
+                  </summary>
+
+                  <div className="grilleParcoursSaisie">
+                    <div>
+                      <span>Démarrage effectif</span>
+                      <strong>{dateLocale(form.dateSignature)}</strong>
+                    </div>
+                    <div>
+                      <span>J+45 mi-parcours</span>
+                      <strong>{dateLocale(parcoursForm.miParcours)}</strong>
+                    </div>
+                    <div>
+                      <span>J+75 synthèse</span>
+                      <strong>{dateLocale(parcoursForm.syntheseProgrammee)}</strong>
+                    </div>
+                    <div>
+                      <span>J+90 fin théorique</span>
+                      <strong>{dateLocale(parcoursForm.finTheorique)}</strong>
+                    </div>
+                    <div>
+                      <span>{form.dateSignature ? "Délai sollicitation → démarrage" : "Délai accumulé avant démarrage"}</span>
+                      <strong>{delaiTotalForm === "" ? "—" : `${delaiTotalForm} j`}</strong>
+                    </div>
+                    <div>
+                      <span>Délai suspendu ESMS</span>
+                      <strong>{delaiSuspenduForm === "" ? "—" : `${delaiSuspenduForm} j`}</strong>
+                    </div>
+                    <div>
+                      <span>Délai UM hors suspension</span>
+                      <strong>{delaiUMForm === "" ? "—" : `${delaiUMForm} j`}</strong>
+                    </div>
+                    <div className={retardFinForm > 0 ? "parcoursRetard" : ""}>
+                      <span>Retard fin théorique</span>
+                      <strong>{retardFinForm > 0 ? `${retardFinForm} j` : "—"}</strong>
+                    </div>
+                  </div>
+                </details>
+              );
+            })()}
 
             <div className="ligneDeux">
               <label className="champ">
