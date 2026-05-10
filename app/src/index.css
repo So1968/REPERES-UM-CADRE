@@ -4840,3 +4840,111 @@ h2 {
 .actionsTrajetTemp .boutonSecondaire {
   font-size: 0.88rem !important;
 }
+
+/* Pilotage UM — correction forte confort visuel saisie rapide */
+.formulaire,
+.formulaire * {
+  font-size-adjust: none;
+}
+
+.formulaire h3,
+.formulaire .colonneForm h3,
+.formulaire .sousBlocForm h3 {
+  font-size: 0.92rem !important;
+  line-height: 1.15 !important;
+  font-weight: 750 !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+.formulaire .champ > span,
+.formulaire label > span,
+.formulaire .caseSimple span {
+  font-size: 0.78rem !important;
+  line-height: 1.1 !important;
+  font-weight: 650 !important;
+  color: #4b5563 !important;
+}
+
+.formulaire input,
+.formulaire select,
+.formulaire textarea {
+  font-size: 0.84rem !important;
+  line-height: 1.15 !important;
+  min-height: 2.25rem !important;
+  padding: 0.38rem 0.55rem !important;
+}
+
+.formulaire textarea {
+  min-height: auto !important;
+}
+
+.formulaire input::placeholder,
+.formulaire textarea::placeholder {
+  font-size: 0.82rem !important;
+}
+
+/* Bloc mobilisation / coordination / alerte : rose visible mais doux */
+.formulaire .blocImpactCadre {
+  background: #fde7f2 !important;
+  border: 1px solid #f5a6cf !important;
+  border-radius: 16px !important;
+  padding: 0.8rem !important;
+  box-shadow: none !important;
+}
+
+.formulaire .blocImpactCadre h3 {
+  color: #7a2f55 !important;
+  font-size: 0.92rem !important;
+}
+
+.formulaire .blocImpactCadre select {
+  background: #fff8fb !important;
+}
+
+/* Destination : titre et choix bien lisibles, sans grossir */
+.formulaire .enteteCarnetStructures h4 {
+  font-size: 0.86rem !important;
+  font-weight: 800 !important;
+  color: #374151 !important;
+}
+
+.formulaire .selectionStructureTrajet .champ > span {
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+}
+
+.formulaire .selectionStructureTrajet select {
+  font-size: 0.84rem !important;
+}
+
+/* Rééquilibrage des petits champs trajet */
+.formulaire .trajetCadre .ligneDeux {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.5rem !important;
+}
+
+.formulaire .trajetCadre .champ {
+  min-width: 0 !important;
+}
+
+/* Boutons moins agressifs */
+.formulaire .boutonPrincipal,
+.formulaire .boutonSecondaire,
+.formulaire .boutonLienExport {
+  font-size: 0.84rem !important;
+}
+
+.formulaire .actionsTrajetTemp .boutonSecondaire {
+  width: 2rem !important;
+  min-width: 2rem !important;
+  height: 2rem !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+  font-size: 1rem !important;
+}
+
+@media (max-width: 520px) {
+  .formulaire .trajetCadre .ligneDeux {
+    grid-template-columns: 1fr !important;
+  }
+}
