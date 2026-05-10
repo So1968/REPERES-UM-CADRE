@@ -1335,6 +1335,21 @@ export default function App() {
     );
   }
 
+  function ouvrirCarteProDepuisPastille(e, selecteur) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const carte = e.currentTarget.closest("details");
+    if (!carte) return;
+
+    carte.open = true;
+
+    window.requestAnimationFrame(() => {
+      const cible = carte.querySelector(selecteur);
+      if (cible) cible.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+
   return (
     <main className="page notranslate" translate="no">
       <header className="entete enteteAvecExports">
@@ -2170,217 +2185,224 @@ export default function App() {
           <h2>Équipe, continuité & attribution</h2>
         </div>
 
-        <section className="sectionFusionEquipe">
+        <section className="sectionFusionEquipe sectionProfessionnelsFusionnes">
           <div className="titreSousSectionFusion">
-            <h3>Charge équipe</h3>
-            <span>Lecture effective et prévisionnelle.</span>
+            <h3>Charge & continuité par professionnelle</h3>
+            <span>Charge, marge projetée, présence et continuité au même endroit.</span>
           </div>
 
-          <div className="grilleCharge">
-          {chargeProfessionnels.map((item) => {
-            const scoreAjuste = Number.isFinite(item.scoreAjuste) ? item.scoreAjuste.toFixed(1) : "—";
-            const resumeCharge = `${item.effectives} effectives · ${item.preparatoires} préparatoires · ${item.sorties15} sorties J+15`;
-            return (
-              <details className="carteCharge carteChargeCompacte" key={item.code}>
-                <summary className="resumeCharge">
-                  <div className="resumeChargePrincipal">
-                    <strong>{item.code}</strong>
-                    <span>{item.metier}</span>
-                  </div>
-                  <div className="resumeChargeSecondaire">
-                    <span className={item.presence === "présente" ? "pastillePresence ok" : "pastillePresence vigilance"}>
-                      {item.presence}
-                    </span>
-                    <span className="miniInfo">Score {scoreAjuste}</span>
-                  </div>
-                  <div className="resumeChargeLecture">{resumeCharge}</div>
-                  <p className="lectureChargeResume">{item.lecture}</p>
-                </summary>
+          <div className="grilleProfessionnelsFusionnes">
+            {chargeProfessionnels.map((item) => {
+              const scoreAjuste = Number.isFinite(item.scoreAjuste) ? item.scoreAjuste.toFixed(1) : "—";
+              const absenceTexte = item.presence === "présente"
+                ? `Présente · dispo ${item.disponibilitePct || "100"} %`
+                : `${item.typeAbsence || item.presence}${item.dateFinAbsence ? ` · vigilance ${dateLocale(item.dateFinAbsence)}` : ""}`;
+              const margeTexte = item.proposable ? item.lecture : "Non proposée";
+              const resumeCharge = `${item.effectives} effectives · ${item.preparatoires} préparatoires · ${item.sorties15} sorties J+15`;
 
-                <div className="detailsCharge">
-                  <div>
-                    <span>Présence</span>
-                    <b>{item.presence}</b>
+              return (
+                <details className="carteProFusionnee" key={item.code} defaultOpen={item.presence !== "présente"}>
+                  <summary className="resumeProFusionnee resumeProPastilles">
+                    <div className="identiteProFusionnee">
+                      <strong>{item.code}</strong>
+                      <span>{item.metier}</span>
+                    </div>
+
+                    <div className="pastillesProFusionnee">
+                      <span
+                        className={item.presence === "présente" ? "pastillePro ok" : "pastillePro vigilance"}
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir présence / continuité"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".blocPresencePro")}
+                      >
+                        {item.presence === "présente" ? `Présent ${item.disponibilitePct || "100"} %` : item.presence}
+                      </span>
+
+                      <span
+                        className={item.effectives === 0 ? "pastillePro favorable" : "pastillePro neutre"}
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir charge"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                      >
+                        {item.effectives} effective{item.effectives > 1 ? "s" : ""}
+                      </span>
+
+                      <span
+                        className="pastillePro neutre"
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir charge prévisionnelle"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                      >
+                        {item.preparatoires} prép.
+                      </span>
+
+                      <span
+                        className={item.proposable ? "pastillePro favorable" : "pastillePro alerte"}
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir marge projetée"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".blocPresencePro")}
+                      >
+                        {item.proposable ? margeTexte : "Non proposable"}
+                      </span>
+
+                      <span
+                        className="pastillePro score"
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir score"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                      >
+                        Score {scoreAjuste}
+                      </span>
+
+                      <span
+                        className={item.relaisPortes > 0 ? "pastillePro vigilance" : "pastillePro neutre"}
+                        role="button"
+                        tabIndex="0"
+                        title="Ouvrir relais"
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                      >
+                        Relais {item.relaisPortes}
+                      </span>
+                    </div>
+
+                    <div className="resumeChargeFusionnee">{resumeCharge}</div>
+                  </summary>
+
+                  <div className="detailsProFusionnee">
+                    <div className="grilleIndicateursPro">
+                      <div><span>Charge effective</span><b>{item.effectives}</b></div>
+                      <div><span>Charge préparatoire</span><b>{item.preparatoires}</b></div>
+                      <div><span>Sorties J+15</span><b>{item.sorties15}</b></div>
+                      <div><span>Relais portés</span><b>{item.relaisPortes}</b></div>
+                      <div><span>VAD / semaine</span><b>{item.vadSemaine}</b></div>
+                      <div><span>Trajets élevés</span><b>{item.trajetsEleves}</b></div>
+                      <div><span>Score brut</span><b>{item.score.toFixed(1)}</b></div>
+                      <div><span>Score ajusté</span><b>{scoreAjuste}</b></div>
+                    </div>
+
+                    <div className="blocPresencePro">
+                      <h4>Présence / continuité</h4>
+
+                      <label className="champ">
+                        <span>Statut de présence</span>
+                        <select value={item.presence} onChange={(e) => modifierPro(item.code, "presence", e.target.value)}>
+                          {presences.map((presence) => (
+                            <option key={presence} value={presence}>
+                              {presence}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <label className="champ">
+                        <span>Type d’absence</span>
+                        <select value={item.typeAbsence || ""} onChange={(e) => modifierPro(item.code, "typeAbsence", e.target.value)}>
+                          {typesAbsence.map((type) => (
+                            <option key={type || "vide"} value={type}>
+                              {type || "Non applicable"}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+
+                      <div className="ligneTrois">
+                        <label className="champ">
+                          <span>Début</span>
+                          <input type="date" value={item.dateDebutAbsence || ""} onChange={(e) => modifierPro(item.code, "dateDebutAbsence", e.target.value)} />
+                        </label>
+                        <label className="champ">
+                          <span>Fin / vigilance</span>
+                          <input type="date" value={item.dateFinAbsence || ""} onChange={(e) => modifierPro(item.code, "dateFinAbsence", e.target.value)} />
+                        </label>
+                        <label className="champ">
+                          <span>Disponibilité %</span>
+                          <input type="number" min="1" max="100" value={item.disponibilitePct || "100"} onChange={(e) => modifierPro(item.code, "disponibilitePct", e.target.value)} />
+                        </label>
+                      </div>
+
+                      <label className="caseSimple">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(item.retourConfirme)}
+                          onChange={(e) => modifierPro(item.code, "retourConfirme", e.target.checked)}
+                        />
+                        <span>Retour confirmé</span>
+                      </label>
+
+                      <label className="champ">
+                        <span>Commentaire cadre court</span>
+                        <input
+                          type="text"
+                          maxLength="90"
+                          placeholder="Non nominatif"
+                          value={item.commentaireAbsence || ""}
+                          onChange={(e) => modifierPro(item.code, "commentaireAbsence", e.target.value)}
+                        />
+                      </label>
+
+                      <p className={item.proposable ? "lectureDispo" : "lectureDispo bloque"}>
+                        {item.disponibiliteLecture}
+                      </p>
+
+                      <p className="lectureCharge">{item.lecture}</p>
+
+                      <div className="zoneRetraitMembre">
+                        <button type="button" className="boutonDanger" onClick={() => retirerMembreEquipe(item.code)}>
+                          Retirer de l’équipe active
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <span>Charge effective</span>
-                    <b>{item.effectives}</b>
-                  </div>
-                  <div>
-                    <span>Charge préparatoire</span>
-                    <b>{item.preparatoires}</b>
-                  </div>
-                  <div>
-                    <span>Sorties sous 15 jours</span>
-                    <b>{item.sorties15}</b>
-                  </div>
-                  <div>
-                    <span>Relais portés</span>
-                    <b>{item.relaisPortes}</b>
-                  </div>
-                  <div>
-                    <span>VAD / semaine</span>
-                    <b>{item.vadSemaine}</b>
-                  </div>
-                  <div>
-                    <span>Trajets élevés</span>
-                    <b>{item.trajetsEleves}</b>
-                  </div>
-                  <div>
-                    <span>Score brut</span>
-                    <b>{item.score.toFixed(1)}</b>
-                  </div>
-                  <div>
-                    <span>Score ajusté</span>
-                    <b>{scoreAjuste}</b>
-                  </div>
-                  <p className="lectureCharge">{item.lecture}</p>
-                </div>
-              </details>
-            );
-          })}
+                </details>
+              );
+            })}
           </div>
-        </section>
 
-        <section className="sectionFusionEquipe">
-          <div className="titreSousSectionFusion">
-            <h3>Disponibilité & continuité</h3>
-            <span>Présences, absences, relais et sécurisation.</span>
-          </div>
-
-          <div className="grilleEquipe">
-          {equipe.map((pro) => {
-            const dispo = statutDisponibilite(pro, dateAttributionReference);
-            const absenceTexte = pro.presence === "présente"
-              ? "Présence renseignée"
-              : `${pro.typeAbsence || pro.presence}${pro.dateFinAbsence ? ` · vigilance ${dateLocale(pro.dateFinAbsence)}` : ""}`;
-            return (
-              <details className="carteEquipe" key={pro.code} defaultOpen={pro.presence !== "présente"}>
-                <summary className="resumeEquipe">
-                  <div className="resumeEquipePrincipal">
-                    <strong>{pro.code}</strong>
-                    <span>{pro.metier}</span>
-                  </div>
-                  <div className="resumeEquipeSecondaire">
-                    <span className={pro.presence === "présente" ? "pastillePresence ok" : "pastillePresence vigilance"}>
-                      {pro.presence}
-                    </span>
-                    <span className="miniInfo">{pro.disponibilitePct || "100"} %</span>
-                  </div>
-                  <div className="resumeEquipeLecture">{absenceTexte}</div>
-                </summary>
-
-                <div className="detailsEquipe">
-                  <label className="champ">
-                    <span>Statut de présence</span>
-                    <select value={pro.presence} onChange={(e) => modifierPro(pro.code, "presence", e.target.value)}>
-                      {presences.map((presence) => (
-                        <option key={presence} value={presence}>
-                          {presence}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="champ">
-                    <span>Type d’absence</span>
-                    <select value={pro.typeAbsence || ""} onChange={(e) => modifierPro(pro.code, "typeAbsence", e.target.value)}>
-                      {typesAbsence.map((type) => (
-                        <option key={type || "vide"} value={type}>
-                          {type || "Non applicable"}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <div className="ligneTrois">
-                    <label className="champ">
-                      <span>Début</span>
-                      <input type="date" value={pro.dateDebutAbsence || ""} onChange={(e) => modifierPro(pro.code, "dateDebutAbsence", e.target.value)} />
-                    </label>
-                    <label className="champ">
-                      <span>Fin / vigilance</span>
-                      <input type="date" value={pro.dateFinAbsence || ""} onChange={(e) => modifierPro(pro.code, "dateFinAbsence", e.target.value)} />
-                    </label>
-                    <label className="champ">
-                      <span>Disponibilité %</span>
-                      <input type="number" min="1" max="100" value={pro.disponibilitePct || "100"} onChange={(e) => modifierPro(pro.code, "disponibilitePct", e.target.value)} />
-                    </label>
-                  </div>
-
-                  <label className="caseSimple">
-                    <input
-                      type="checkbox"
-                      checked={Boolean(pro.retourConfirme)}
-                      onChange={(e) => modifierPro(pro.code, "retourConfirme", e.target.checked)}
-                    />
-                    <span>Retour confirmé</span>
-                  </label>
-
-                  <label className="champ">
-                    <span>Commentaire cadre court</span>
-                    <input
-                      type="text"
-                      maxLength="90"
-                      placeholder="Non nominatif"
-                      value={pro.commentaireAbsence || ""}
-                      onChange={(e) => modifierPro(pro.code, "commentaireAbsence", e.target.value)}
-                    />
-                  </label>
-
-                  <p className={dispo.proposable ? "lectureDispo" : "lectureDispo bloque"}>{dispo.vigilance}</p>
-
-                  <div className="zoneRetraitMembre">
-                    <button type="button" className="boutonDanger" onClick={() => retirerMembreEquipe(pro.code)}>
-                      Retirer de l’équipe active
-                    </button>
-                  </div>
-                </div>
-              </details>
-            );
-          })}
-        </div>
-
-        <details className="gestionEquipeRepliee">
-          <summary className="resumeGestionEquipe">
-            <div>
-              <strong>Ajouter / retirer un membre</strong>
-              <span>{equipe.length} personne(s) dans l’équipe active. Gestion ponctuelle uniquement.</span>
-            </div>
+          <details className="gestionEquipeRepliee">
+            <summary className="resumeGestionEquipe">
+              <div>
+                <strong>Ajouter / retirer un membre</strong>
+                <span>{equipe.length} personne(s) dans l’équipe active. Gestion ponctuelle uniquement.</span>
+              </div>
             </summary>
 
-          <form className="ajoutMembreEquipe" onSubmit={ajouterMembreEquipe}>
-            <label className="champ">
-              <span>Code membre</span>
-              <input
-                type="text"
-                maxLength="16"
-                placeholder="ex : IDE-04, EDU-07, NEURO-03"
-                value={nouveauMembre.code}
-                onChange={(e) => modifierNouveauMembre("code", e.target.value)}
-              />
-            </label>
+            <form className="ajoutMembreEquipe" onSubmit={ajouterMembreEquipe}>
+              <label className="champ">
+                <span>Code membre</span>
+                <input
+                  type="text"
+                  maxLength="16"
+                  placeholder="ex : IDE-04, EDU-07, NEURO-03"
+                  value={nouveauMembre.code}
+                  onChange={(e) => modifierNouveauMembre("code", e.target.value)}
+                />
+              </label>
 
-            <label className="champ">
-              <span>Métier</span>
-              <select value={nouveauMembre.metier} onChange={(e) => modifierNouveauMembre("metier", e.target.value)}>
-                {metiers.map((metier) => (
-                  <option key={metier} value={metier}>
-                    {metier}
-                  </option>
-                ))}
-              </select>
-            </label>
+              <label className="champ">
+                <span>Métier</span>
+                <select value={nouveauMembre.metier} onChange={(e) => modifierNouveauMembre("metier", e.target.value)}>
+                  {metiers.map((metier) => (
+                    <option key={metier} value={metier}>
+                      {metier}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-            <button type="submit" className="boutonPrincipal">
-              Ajouter
-            </button>
-          </form>
+              <button type="submit" className="boutonPrincipal">
+                Ajouter
+              </button>
+            </form>
 
-          <p className="noteCadre">
-            Les membres retirés disparaissent de l’équipe active. Les anciennes fiches conservent leur code si elles étaient déjà renseignées.
-          </p>
-        </details>
+            <p className="noteCadre">
+              Les membres retirés disparaissent de l’équipe active. Les anciennes fiches conservent leur code si elles étaient déjà renseignées.
+            </p>
+          </details>
         </section>
 
         <section className="sectionFusionEquipe">
