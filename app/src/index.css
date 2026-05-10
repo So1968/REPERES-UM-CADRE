@@ -5140,3 +5140,12 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+/* Pilotage UM — retard ESMS visible */
+.resumeSituationParcours .resumeRetardEsms {
+  font-weight: 800;
+  color: #9a3412;
+  background: rgba(255, 237, 213, 0.82);
+  border-radius: 999px;
+  padding: 0.15rem 0.42rem;
+}

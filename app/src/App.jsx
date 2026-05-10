@@ -1413,9 +1413,14 @@ export default function App() {
               const nonRetenue = estAnalyseNonRetenue(situation);
               const alerte = alerteParcours(situation);
               const score = calculerScoreSituation(situation);
-              const delaiTotal = joursEntre(situation.dateSollicitation, situation.dateSignature);
-              const delaiSuspendu = joursEntre(situation.dateDemandeComplementESMS, situation.dateRetourESMS);
+              const referenceDelai = situation.dateSignature || aujourdHuiISO();
+              const delaiTotal = joursEntre(situation.dateSollicitation, referenceDelai);
+              const delaiSuspendu = joursEntre(
+                situation.dateDemandeComplementESMS,
+                situation.dateRetourESMS || (situation.dateDemandeComplementESMS ? aujourdHuiISO() : "")
+              );
               const delaiUM = delaiTotal === "" ? "" : Math.max(0, Number(delaiTotal) - Number(delaiSuspendu || 0));
+              const retardESMS = delaiSuspendu === "" ? 0 : Number(delaiSuspendu);
 
               return (
                 <details className="carteSituation carteSituationRepliee" key={situation.id}>
@@ -1437,6 +1442,7 @@ export default function App() {
                       )}
 
                       {alerte && <span className={badgeClasse("alerte")}>{alerte}</span>}
+                      {retardESMS > 0 && <span className={badgeClasse("alerte")}>ESMS +{retardESMS} j</span>}
                     </div>
 
                     <div className="resumeSituationLecture">
@@ -1546,7 +1552,7 @@ export default function App() {
 
                     <div className="delaisCompact">
                       <span>Délai total sollicitation → signature : <b>{delaiTotal || "—"}</b> j</span>
-                      <span>Délai suspendu ESMS : <b>{delaiSuspendu || "—"}</b> j</span>
+                      <span>Retard ESMS / attente externe : <b>{delaiSuspendu || "—"}</b> j</span>
                       <span>Délai UM hors suspension : <b>{delaiUM || "—"}</b> j</span>
                     </div>
 
@@ -2018,7 +2024,7 @@ export default function App() {
                       <strong>{delaiTotalForm === "" ? "—" : `${delaiTotalForm} j`}</strong>
                     </div>
                     <div>
-                      <span>Délai suspendu ESMS</span>
+                      <span>Retard ESMS / attente externe</span>
                       <strong>{delaiSuspenduForm === "" ? "—" : `${delaiSuspenduForm} j`}</strong>
                     </div>
                     <div>
@@ -2052,11 +2058,11 @@ export default function App() {
                 checked={form.delaiSuspendu}
                 onChange={(e) => modifierForm("delaiSuspendu", e.target.checked)}
               />
-              <span>Délai suspendu / attente externe</span>
+              <span>Retard ESMS / attente externe</span>
             </label>
 
             <label className="champ">
-              <span>Motif court du délai suspendu</span>
+              <span>Motif court du retard ESMS</span>
               <input
                 type="text"
                 maxLength="90"
