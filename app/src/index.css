@@ -4552,3 +4552,74 @@ h2 {
 .enteteCarnetStructures h4 {
   font-size: 1rem;
 }
+
+/* Pilotage UM — actions destination compactes */
+.actionsDestinationMini {
+  display: grid;
+  gap: 0.22rem;
+  justify-items: center;
+}
+
+.boutonMiniPlus,
+.boutonMiniModifier {
+  border: 1px solid var(--bordure, #e5e7eb);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  width: 1.85rem;
+  height: 1.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boutonMiniModifier {
+  width: 1.45rem;
+  height: 1.45rem;
+  font-size: 0.7rem;
+  opacity: 0.78;
+}
+
+.boutonMiniModifier:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+/* Pilotage UM — destination : actions compactes */
+.actionsDestinationMini {
+  display: grid;
+  gap: 0.22rem;
+  justify-items: center;
+}
+
+.boutonMiniPlus,
+.boutonMiniModifier {
+  border: 1px solid var(--bordure, #e5e7eb);
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.boutonMiniPlus {
+  width: 1.85rem;
+  height: 1.85rem;
+  font-size: 0.95rem;
+}
+
+.boutonMiniModifier {
+  width: 1.45rem;
+  height: 1.45rem;
+  font-size: 0.7rem;
+  opacity: 0.78;
+}
+
+.boutonMiniModifier:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}

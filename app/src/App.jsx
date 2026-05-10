@@ -1696,14 +1696,28 @@ export default function App() {
 
                 <div className="carnetStructuresTrajet">
                   <div className="enteteCarnetStructures">
-                    <h4>Structure</h4>
-                    <button
-                      type="button"
-                      className="boutonSecondaire"
-                      onClick={() => setAfficherFormStructureTrajet((actuel) => !actuel)}
-                    >
-                      {afficherFormStructureTrajet ? "refermer" : "+ ajouter"}
-                    </button>
+                    <h4>Destination</h4>
+                    <div className="actionsDestinationMini">
+                      <button
+                        type="button"
+                        className="boutonMiniPlus"
+                        title="Ajouter"
+                        aria-label="Ajouter une structure"
+                        onClick={() => setAfficherFormStructureTrajet((actuel) => !actuel)}
+                      >
+                        {afficherFormStructureTrajet ? "−" : "+"}
+                      </button>
+                      <button
+                        type="button"
+                        className="boutonMiniModifier"
+                        title="Modifier"
+                        aria-label="Modifier la structure sélectionnée"
+                        disabled={!structureTrajetSelection}
+                        onClick={() => modifierStructureTrajetExistante(structureTrajetSelection)}
+                      >
+                        ✎
+                      </button>
+                    </div>
                   </div>
 
                   <div className="selectionStructureTrajet">
@@ -1731,14 +1745,7 @@ export default function App() {
                       </select>
                     </label>
 
-                    <button
-                      type="button"
-                      className="boutonSecondaire"
-                      disabled={!structureTrajetSelection}
-                      onClick={() => modifierStructureTrajetExistante(structureTrajetSelection)}
-                    >
-                      Modifier
-                    </button>
+
                   </div>
 
                   {afficherFormStructureTrajet && (
