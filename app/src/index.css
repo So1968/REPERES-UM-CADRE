@@ -5620,3 +5620,70 @@ h2 {
   background: rgba(252, 231, 243, 0.68) !important;
   border-color: rgba(244, 114, 182, 0.36) !important;
 }
+
+/* Pilotage UM — détails ciblés des pastilles professionnelles */
+.detailPastillesPro {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.detailPastillePro {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.62rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.detailPastillePro h4 {
+  margin: 0;
+  font-size: 0.86rem;
+}
+
+.detailPastillePro p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--texteSecondaire, #64748b);
+}
+
+.detailEffectivesPro {
+  background: rgba(219, 234, 254, 0.68) !important;
+  border-color: rgba(96, 165, 250, 0.36) !important;
+}
+
+.detailPreparatoiresPro {
+  background: rgba(237, 233, 254, 0.68) !important;
+  border-color: rgba(167, 139, 250, 0.36) !important;
+}
+
+.detailVigilancePro.favorable {
+  background: rgba(209, 250, 229, 0.68) !important;
+  border-color: rgba(16, 185, 129, 0.36) !important;
+}
+
+.detailVigilancePro.alerte {
+  background: rgba(254, 226, 226, 0.68) !important;
+  border-color: rgba(248, 113, 113, 0.36) !important;
+}
+
+.detailScorePro {
+  background: rgba(239, 246, 255, 0.72) !important;
+  border-color: rgba(96, 165, 250, 0.36) !important;
+}
+
+.detailRelaisPro {
+  background: rgba(252, 231, 243, 0.68) !important;
+  border-color: rgba(244, 114, 182, 0.36) !important;
+}
+
+.actionsRelaisPro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.boutonRelaisPro {
+  font-size: 0.78rem !important;
+  padding: 0.32rem 0.55rem !important;
+}

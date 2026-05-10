@@ -734,11 +734,26 @@ export default function App() {
         trajetsEleves: liste.filter((s) => Number(s.trajetMinutes || 0) >= 60).length,
         alertes: liste.filter(alerteParcours).length,
         relaisPortes: liste.filter((s) => s.relaisCode === pro.code && s.relaisIntensite !== "aucun").length,
+        situationsEffectives: liste.filter(estEffective).map((s) => s.code),
+        situationsPreparatoires: liste.filter(estPreparatoire).map((s) => s.code),
+        situationsRelais: liste
+          .filter((s) => s.relaisCode === pro.code && s.relaisIntensite !== "aucun")
+          .map((s) => s.code),
+        situationsRelaisASecuriser: situationsASeecuriser.filter(
+          (s) => s.referentCode === pro.code || s.binomeCode === pro.code
+        ),
+        situationsAlerte: liste
+          .filter((s) => Boolean(alerteParcours(s)))
+          .map((s) => `${s.code} · ${alerteParcours(s)}`),
+        detailScore: liste
+          .map((s) => ({ code: s.code, score: scoreSituationPourPro(s, pro.code) }))
+          .filter((detail) => detail.score > 0),
+        facteurDisponibilite: dispo.facteur,
         score: scoreBrut,
         lecture: dispo.proposable ? lectureScore(scoreAjuste) : "Non proposée",
       };
     });
-  }, [situations, equipe, dateAttributionReference]);
+  }, [situations, equipe, dateAttributionReference, situationsASeecuriser]);
 
   const propositionAttribution = useMemo(() => {
     const candidats = chargeProfessionnels.filter((item) => item.metier === metierAttribution);
@@ -2223,7 +2238,7 @@ export default function App() {
                         role="button"
                         tabIndex="0"
                         title="Ouvrir charge"
-                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".detailEffectivesPro")}
                       >
                         {item.effectives} effective{item.effectives > 1 ? "s" : ""}
                       </span>
@@ -2233,7 +2248,7 @@ export default function App() {
                         role="button"
                         tabIndex="0"
                         title="Ouvrir charge prévisionnelle"
-                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".detailPreparatoiresPro")}
                       >
                         {item.preparatoires} prép.
                       </span>
@@ -2243,7 +2258,7 @@ export default function App() {
                         role="button"
                         tabIndex="0"
                         title="Ouvrir marge projetée"
-                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".blocPresencePro")}
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".detailVigilancePro")}
                       >
                         {item.proposable ? margeTexte : "Non proposable"}
                       </span>
@@ -2253,7 +2268,7 @@ export default function App() {
                         role="button"
                         tabIndex="0"
                         title="Ouvrir score"
-                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".detailScorePro")}
                       >
                         Score {scoreAjuste}
                       </span>
@@ -2263,7 +2278,7 @@ export default function App() {
                         role="button"
                         tabIndex="0"
                         title="Ouvrir relais"
-                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".grilleIndicateursPro")}
+                        onClick={(e) => ouvrirCarteProDepuisPastille(e, ".detailRelaisPro")}
                       >
                         Relais {item.relaisPortes}
                       </span>
@@ -2282,6 +2297,46 @@ export default function App() {
                       <div><span>Trajets élevés</span><b>{item.trajetsEleves}</b></div>
                       <div><span>Score brut</span><b>{item.score.toFixed(1)}</b></div>
                       <div><span>Score ajusté</span><b>{scoreAjuste}</b></div>
+                    </div>
+
+                    <div className="detailPastillesPro">
+                      <div className="detailPastillePro detailEffectivesPro">
+                        <h4>Situations effectives</h4>
+                        <p>{item.situationsEffectives.length ? item.situationsEffectives.join(" · ") : "Aucune situation effective"}</p>
+                      </div>
+
+                      <div className="detailPastillePro detailPreparatoiresPro">
+                        <h4>Situations préparatoires</h4>
+                        <p>{item.situationsPreparatoires.length ? item.situationsPreparatoires.join(" · ") : "Aucune situation préparatoire"}</p>
+                      </div>
+
+                      <div className={item.proposable ? "detailPastillePro detailVigilancePro favorable" : "detailPastillePro detailVigilancePro alerte"}>
+                        <h4>Marge projetée / vigilance</h4>
+                        <p>{item.lecture}</p>
+                        <p>{item.disponibiliteLecture}</p>
+                        {item.situationsAlerte.length > 0 && <p>Alertes : {item.situationsAlerte.join(" · ")}</p>}
+                      </div>
+
+                      <div className="detailPastillePro detailScorePro">
+                        <h4>Détail du score</h4>
+                        <p>Score brut : {item.score.toFixed(1)} · Score ajusté : {scoreAjuste} · Facteur disponibilité : {item.facteurDisponibilite}</p>
+                        <p>{item.detailScore.length ? item.detailScore.map((detail) => `${detail.code} : ${detail.score.toFixed(1)}`).join(" · ") : "Aucun point de charge actif"}</p>
+                      </div>
+
+                      <div className="detailPastillePro detailRelaisPro">
+                        <h4>Relais</h4>
+                        <p>Relais portés : {item.situationsRelais.length ? item.situationsRelais.join(" · ") : "aucun"}</p>
+                        <p>À sécuriser : {item.situationsRelaisASecuriser.length ? item.situationsRelaisASecuriser.map((s) => s.code).join(" · ") : "aucune situation"}</p>
+                        {item.situationsRelaisASecuriser.length > 0 && (
+                          <div className="actionsRelaisPro">
+                            {item.situationsRelaisASecuriser.map((s) => (
+                              <button type="button" className="boutonSecondaire boutonRelaisPro" key={s.id} onClick={() => preparerModification(s)}>
+                                Organiser {s.code}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div className={item.presence === "présente" ? "blocPresencePro blocPresenceProOk" : "blocPresencePro blocPresenceProAlerte"}>
