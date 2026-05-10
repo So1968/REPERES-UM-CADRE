@@ -2188,7 +2188,6 @@ export default function App() {
         <section className="sectionFusionEquipe sectionProfessionnelsFusionnes">
           <div className="titreSousSectionFusion">
             <h3>Charge & continuité par professionnelle</h3>
-            <span>Charge, marge projetée, présence et continuité au même endroit.</span>
           </div>
 
           <div className="grilleProfessionnelsFusionnes">
@@ -2210,7 +2209,7 @@ export default function App() {
 
                     <div className="pastillesProFusionnee">
                       <span
-                        className={item.presence === "présente" ? "pastillePro ok" : "pastillePro vigilance"}
+                        className={item.presence === "présente" ? "pastillePro pastillePresencePro" : "pastillePro pastilleAbsencePro"}
                         role="button"
                         tabIndex="0"
                         title="Ouvrir présence / continuité"
@@ -2220,7 +2219,7 @@ export default function App() {
                       </span>
 
                       <span
-                        className={item.effectives === 0 ? "pastillePro favorable" : "pastillePro neutre"}
+                        className={item.effectives === 0 ? "pastillePro pastilleEffectiveZero" : "pastillePro pastilleEffective"}
                         role="button"
                         tabIndex="0"
                         title="Ouvrir charge"
@@ -2230,7 +2229,7 @@ export default function App() {
                       </span>
 
                       <span
-                        className="pastillePro neutre"
+                        className="pastillePro pastillePrep"
                         role="button"
                         tabIndex="0"
                         title="Ouvrir charge prévisionnelle"
@@ -2240,7 +2239,7 @@ export default function App() {
                       </span>
 
                       <span
-                        className={item.proposable ? "pastillePro favorable" : "pastillePro alerte"}
+                        className={item.proposable ? "pastillePro pastilleMarge" : "pastillePro pastilleMargeAlerte"}
                         role="button"
                         tabIndex="0"
                         title="Ouvrir marge projetée"
@@ -2260,7 +2259,7 @@ export default function App() {
                       </span>
 
                       <span
-                        className={item.relaisPortes > 0 ? "pastillePro vigilance" : "pastillePro neutre"}
+                        className={item.relaisPortes > 0 ? "pastillePro pastilleRelaisAlerte" : "pastillePro pastilleRelais"}
                         role="button"
                         tabIndex="0"
                         title="Ouvrir relais"
